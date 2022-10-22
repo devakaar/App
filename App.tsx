@@ -1,120 +1,74 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React, {type PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
+  Dimensions,
+  Image,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
+import React from 'react';
+import {Colors, Images} from './src/theme';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section: React.FC<
-  PropsWithChildren<{
-    title: string;
-  }>
-> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
   return (
-    <View style={styles.sectionContainer}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: Colors.WHITE,
+        paddingTop: 24,
+      }}>
+      <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
       <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
+        style={{
+          color: Colors.CHARCOAL_GREY,
+          fontWeight: 'bold',
+          fontSize: 48,
+          marginHorizontal: 16,
+        }}>
+        {'Welcome to Salhakaar'}
       </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+      <View
+        style={{
+          backgroundColor: Colors.SECONDARY,
+          alignSelf: 'flex-start',
+          paddingHorizontal: 24,
+          paddingVertical: 16,
+          borderRadius: 26,
+          marginTop: 32,
+          marginHorizontal: 16,
+        }}>
+        <Text style={{fontWeight: '600', color: Colors.WHITE, fontSize: 16}}>
+          Get Started
+        </Text>
+      </View>
+      <Image
+        source={Images.login_waves}
+        style={{width: '100%', resizeMode: 'contain'}}
+      />
+      <Image source={Images.login_curves} style={styles.curve} />
+      <Image source={Images.login_consultant} style={styles.consultant} />
     </View>
   );
 };
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+export default App;
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  parent: {},
+  curve: {
+    position: 'absolute',
+    bottom: 0,
+    width: Dimensions.get('window').width,
+    height: 'auto',
+    aspectRatio: 1.5,
+    transform: [{scale: 1.3}],
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  consultant: {
+    position: 'absolute',
+    bottom: 0,
+    width: Dimensions.get('window').width,
+    height: 'auto',
+    aspectRatio: 1,
+    resizeMode: 'contain',
   },
 });
-
-export default App;
