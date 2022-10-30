@@ -9,16 +9,24 @@ import {
 import React from 'react';
 import {Colors, Images} from '../../theme';
 import {SButton} from '../../components';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const GetStarted = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
+
   return (
     <View style={styles.parent}>
       <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
       <Text style={styles.welcomeText}>{'Welcome to Salhakaar'}</Text>
-      <SButton title="Get Started" onPress={() => {}} width="flex-start" />
-      <Image source={Images.login_waves} style={styles.waves} />
-      <Image source={Images.login_curves} style={styles.curve} />
-      <Image source={Images.login_consultant} style={styles.consultant} />
+      <SButton
+        title="Get Started"
+        onPress={() => navigation.navigate('Login')}
+        width="flex-start"
+      />
+      <Image source={Images.gs_waves} style={styles.waves} />
+      <Image source={Images.gs_curves} style={styles.curve} />
+      <Image source={Images.gs_consultant} style={styles.consultant} />
     </View>
   );
 };

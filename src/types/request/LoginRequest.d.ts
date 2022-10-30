@@ -1,5 +1,5 @@
 type LoginRequest = {
-  name: string;
   email: string;
-  password: String;
+  password: string;
+  name: string;
 };
