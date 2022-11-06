@@ -1,5 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
 import ChatStack from './ChatStack';
 import ProfileStack from './ProfileStack';
@@ -13,17 +14,32 @@ const BottomNavigator = () => {
       <Tabs.Screen
         name="ChatStack"
         component={ChatStack}
-        options={{tabBarLabel: 'Chat'}}
+        options={{
+          tabBarLabel: 'Chat',
+          tabBarIcon: ({color, size}) => (
+            <MaterialIcons name="chat" color={color} size={size} />
+          ),
+        }}
       />
       <Tabs.Screen
         name="HomeStack"
         component={HomeStack}
-        options={{tabBarLabel: 'Chat'}}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({color, size}) => (
+            <MaterialIcons name="home" color={color} size={size} />
+          ),
+        }}
       />
       <Tabs.Screen
         name="ProfileStack"
         component={ProfileStack}
-        options={{tabBarLabel: 'Chat'}}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color, size}) => (
+            <MaterialIcons name="account-circle" color={color} size={size} />
+          ),
+        }}
       />
     </Tabs.Navigator>
   );

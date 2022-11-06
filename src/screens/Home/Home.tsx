@@ -1,16 +1,17 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-  FlatList,
-  ListRenderItem,
-  Image,
-} from 'react-native';
+import {StyleSheet, Text, View, Alert, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ConsultantApi} from '../../service';
-import {Colors} from '../../theme';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Swiper from '../../components/Swiper';
+import Slide from '../../components/Slide';
+import HomeHeader from '../../components/HomeHeader';
+import Card from '../../components/Card';
+import {COLORS} from '../../constants';
+
+const bannerImages = [
+  {image: 'https://dummyimage.com/300.png/09f/fff'},
+  {image: 'https://dummyimage.com/300.png/09f/fff'},
+  {image: 'https://dummyimage.com/300.png/09f/fff'},
+];
 
 const Home = () => {
   const [data, setData] = useState<Array<Consultant>>([]);
@@ -25,45 +26,82 @@ const Home = () => {
       }
     };
     callApi();
-  }, []);
+  }, [data]);
 
-  const renderItem: ListRenderItem<Consultant> = ({item}) => (
-    <View
-      style={{
-        flexDirection: 'row',
-        marginHorizontal: 18,
-        marginBottom: 24,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: 'black',
-        overflow: 'hidden',
-      }}>
-      <View style={{margin: 4, borderRadius: 8, overflow: 'hidden'}}>
-        <Image
-          source={{uri: item.image}}
-          style={{height: 80, width: 80, resizeMode: 'stretch'}}
-        />
-      </View>
-      <View>
-        <Text style={{color: 'black'}}>{item.name}</Text>
-        <Text
-          style={{
-            color: 'black',
-          }}>
-          {`${item.avgRating}\u2605 (${item.totalRatings} Ratings)`}
-        </Text>
-        <Icon name="star" size={25} color="yellow" />
-      </View>
-    </View>
-  );
+  const renderHeader = () => {
+    return (
+      <>
+        <HomeHeader OnSearch={() => {}} />
+        <View style={{flex: 0.8}}>
+          {bannerImages.length > 0 && (
+            <Swiper
+              containerStyle={{marginLeft: 10, marginRight: 10}}
+              innerContainerStyle={{
+                height: 260,
+              }}
+              loop
+              from={0}
+              timeout={3}
+              minDistanceForAction={0.1}
+              controlsProps={{
+                dotsTouchable: false,
+                DotComponent: ({index, isActive, onPress}) => (
+                  <Text
+                    key={index}
+                    style={{
+                      paddingHorizontal: 5,
+                      fontSize: 40,
+                      color: COLORS.PRIMARY,
+                      opacity: isActive ? 0.5 : 0.1,
+                    }}>
+                    &bull;
+                  </Text>
+                ),
+              }}>
+              {bannerImages.map((item, index) => (
+                <Slide key={index} image={item.image} />
+              ))}
+            </Swiper>
+          )}
+        </View>
+      </>
+    );
+  };
 
   return (
-    <View style={{flex: 1, backgroundColor: Colors.WHITE, paddingVertical: 24}}>
-      <FlatList data={data} renderItem={renderItem} />
+    <View style={styles.flexOne}>
+      <View style={styles.flexOne}>
+        {renderHeader()}
+        <View style={styles.flexOne}>
+          <FlatList
+            data={data}
+            renderItem={({item}) => <Card data={item} />}
+            keyExtractor={item => item._id}
+            //ListHeaderComponent={renderHeader()}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      </View>
+      <View style={styles.containerWrapper}>
+        <View style={{height: 300, backgroundColor: COLORS.primary}} />
+        <View style={[styles.flexOne, {backgroundColor: COLORS.white}]} />
+      </View>
     </View>
   );
 };
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  flexOne: {
+    flex: 1,
+  },
+  containerWrapper: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    zIndex: -1,
+  },
+});

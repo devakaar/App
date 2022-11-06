@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import {Colors, Images} from '../../theme';
-import {SButton} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import SButton from '../../components/SButton';
 
 const GetStarted = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();

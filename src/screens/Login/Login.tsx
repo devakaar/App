@@ -12,31 +12,64 @@ import {Colors, Images} from '../../theme';
 import {
   GoogleSigninButton,
   GoogleSignin,
+  statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {LoginApi} from '../../service';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../service/Instance';
 
 const Login = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
 
-  GoogleSignin.configure({
-    webClientId:
-      '767756685217-sd72181jdfi6dl14sv7ierjs05hgc52f.apps.googleusercontent.com',
-  });
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('token', value);
+    } catch (e) {
+      // saving error
+    }
+  };
 
   const googleSignin = async () => {
     try {
-      const response = await GoogleSignin.signIn();
-      const user = response.user;
+      console.log('before login');
+      await GoogleSignin.hasPlayServices();
+      //await GoogleSignin.revokeAccess();
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      console.log('be login 11', isSignedIn);
+      let user;
+      if (isSignedIn) {
+        const currentUser = await GoogleSignin.getCurrentUser();
+        console.log('after currentUser', currentUser);
+        user = currentUser?.user;
+      } else {
+        console.log('in elseee');
+        try {
+          const response = await GoogleSignin.signIn();
+          user = response?.user;
+        } catch (error) {
+          console.log('in elseee', error);
+          if (error?.code === statusCodes.SIGN_IN_CANCELLED) {
+            // user cancelled the login flow
+          } else if (error?.code === statusCodes.IN_PROGRESS) {
+            // operation (e.g. sign in) is in progress already
+          } else if (error?.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            // play services not available or outdated
+          } else {
+            // some other error happened
+          }
+        }
+      }
       const body = {
-        email: user.email,
-        password: user.id,
-        name: user.name ?? user.givenName ?? 'User',
+        email: user?.email || '',
+        password: user?.id || '',
+        name: user?.name ?? user?.givenName ?? 'User',
+        fcmToken: 'ABCDEF',
       };
       const apiResponse = (await LoginApi.login(body)).data.data;
       AxiosInstance.defaults.headers.common.token = apiResponse.token;
+      storeData(apiResponse.token || '');
       navigation.navigate('BottomTabs');
     } catch (err: any) {
       Alert.alert(err);
