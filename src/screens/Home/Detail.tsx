@@ -5,6 +5,7 @@ import {
   Image,
   FlatList,
   StatusBar,
+  Button,
 } from 'react-native';
 import React from 'react';
 import {assets, COLORS, SHADOWS, SIZES} from '../../constants';
@@ -45,7 +46,7 @@ const DetailsHeader = ({data, navigation}) => (
   </View>
 );
 
-export default function Details({route, navigation}) {
+const Details = ({route, navigation}) => {
   const {data} = route.params;
 
   return (
@@ -77,9 +78,13 @@ export default function Details({route, navigation}) {
             <DetailsHeader data={data} navigation={navigation} />
             <SubInfo data={data} />
 
-            <View>
-              <DetailsDesc data={data} />
-            </View>
+            <View>{/* <DetailsDesc data={data} /> */}</View>
+            <Button
+              title="Click"
+              onPress={() => {
+                navigation.navigate('Chat');
+              }}
+            />
 
             <Text
               style={{
@@ -96,4 +101,5 @@ export default function Details({route, navigation}) {
       />
     </SafeAreaView>
   );
-}
+};
+export default Details;

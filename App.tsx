@@ -7,7 +7,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 const App = () => {
   GoogleSignin.configure({
     webClientId:
-      '767756685217-sd72181jdfi6dl14sv7ierjs05hgc52f.apps.googleusercontent.com',
+      '767756685217-umkhbb5ptuakqulcap3g34lcpql1u1r8.apps.googleusercontent.com',
   });
 
   AxiosInstance.interceptors.response.use(

@@ -1,3 +1,4 @@
 type ChatStack = {
-  Chat: undefined;
+  ChatList: undefined;
+  Chat: {roomId: string};
 };

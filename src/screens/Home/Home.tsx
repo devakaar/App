@@ -26,7 +26,7 @@ const Home = () => {
       }
     };
     callApi();
-  }, [data]);
+  }, []);
 
   const renderHeader = () => {
     return (

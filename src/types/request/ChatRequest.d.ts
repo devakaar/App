@@ -1,0 +1,3 @@
+type ChatRequest = {
+  consultantId: string;
+};
