@@ -3,4 +3,5 @@ export default {
   SECONDARY: '#609DFE',
   WHITE: '#FFFFFF',
   CHARCOAL_GREY: '#333333',
+  GRAVEL_GREY: '#666666',
 };

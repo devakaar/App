@@ -23,11 +23,7 @@ const Login = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
 
   const storeData = async (value: string) => {
-    try {
-      await AsyncStorage.setItem('token', value);
-    } catch (e) {
-      // saving error
-    }
+    AsyncStorage.setItem('token', value);
   };
 
   const googleSignin = async () => {
@@ -46,15 +42,15 @@ const Login = () => {
         } catch (error) {}
       }
       const body = {
-        email: user?.email || '',
-        password: user?.id || '',
+        email: user?.email ?? '',
+        password: user?.id ?? '',
         name: user?.name ?? user?.givenName ?? 'User',
         fcmToken: 'ABCDEF',
         avatar: user?.photo,
       };
       const apiResponse = (await LoginApi.login(body)).data.data;
       AxiosInstance.defaults.headers.common.token = apiResponse.token;
-      storeData(apiResponse.token || '');
+      storeData(apiResponse.token ?? '');
       navigation.navigate('BottomTabs');
     } catch (err: any) {
       Alert.alert(err);

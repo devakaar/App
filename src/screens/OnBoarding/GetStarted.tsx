@@ -10,7 +10,7 @@ import React from 'react';
 import {Colors, Images} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import SButton from '../../components/SButton';
+import {SButton} from '../../components';
 
 const GetStarted = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();

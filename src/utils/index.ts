@@ -1,0 +1,2 @@
+import {BASE_URL, DEVICE_HEIGHT, DEVICE_WIDTH} from './Constants';
+export {DEVICE_HEIGHT, DEVICE_WIDTH, BASE_URL};

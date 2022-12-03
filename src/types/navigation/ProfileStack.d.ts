@@ -1,3 +1,0 @@
-type ProfileStack = {
-  Profile: undefined;
-};

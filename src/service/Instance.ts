@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {BASE_URL} from '../utils';
 
 const AxiosInstance = axios.create({
-  baseURL: 'https://devakaar.herokuapp.com',
+  baseURL: BASE_URL,
 });
 
 export default AxiosInstance;

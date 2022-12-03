@@ -1,10 +1,9 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {COLORS, SIZES} from '../../constants';
-import HomeHeader from '../../components/HomeHeader';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {Colors} from '../../theme';
 
 const Profile = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
@@ -19,7 +18,6 @@ const Profile = () => {
 
   return (
     <View style={styles.flexOne}>
-      <HomeHeader OnSearch={() => {}} showProfileData />
       <View
         style={{
           flex: 1,
@@ -29,8 +27,7 @@ const Profile = () => {
         <TouchableOpacity style={{padding: 20}}>
           <Text
             style={{
-              fontSize: SIZES.large,
-              color: COLORS.primary,
+              color: Colors.PRIMARY,
             }}>
             {'Wallet'}
           </Text>
@@ -38,8 +35,7 @@ const Profile = () => {
         <TouchableOpacity style={{padding: 20}}>
           <Text
             style={{
-              fontSize: SIZES.large,
-              color: COLORS.primary,
+              color: Colors.PRIMARY,
             }}>
             {'Profile Details'}
           </Text>
@@ -47,8 +43,7 @@ const Profile = () => {
         <TouchableOpacity style={{padding: 20}}>
           <Text
             style={{
-              fontSize: SIZES.large,
-              color: COLORS.primary,
+              color: Colors.PRIMARY,
             }}>
             {'Privacy Policies'}
           </Text>
@@ -56,16 +51,15 @@ const Profile = () => {
         <TouchableOpacity style={{padding: 20}} onPress={onPressLogOut}>
           <Text
             style={{
-              fontSize: SIZES.large,
-              color: COLORS.primary,
+              color: Colors.PRIMARY,
             }}>
             {'LogOut'}
           </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.containerWrapper}>
-        <View style={{height: 200, backgroundColor: COLORS.primary}} />
-        <View style={[styles.flexOne, {backgroundColor: COLORS.white}]} />
+        <View style={{height: 200, backgroundColor: Colors.PRIMARY}} />
+        <View style={[styles.flexOne, {backgroundColor: Colors.PRIMARY}]} />
       </View>
     </View>
   );
