@@ -5,6 +5,7 @@ import {ConsultantApi} from '../../service';
 import {Colors} from '../../theme';
 import {Header, SButton} from '../../components';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import ChatApi from '../../service/ChatApi';
 
 const ConsultantDetails = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
@@ -27,6 +28,12 @@ const ConsultantDetails = () => {
     ConsultantApi.getConsultantDetails(id).then(res => setData(res.data.data));
   }, [id]);
 
+  const initiateChat = () => {
+    ChatApi.createChat({consultantId: id}).then(res =>
+      navigation.navigate('Chat', {roomId: res.data.data._id}),
+    );
+  };
+
   return (
     <View style={styles.parent}>
       <Header title={data.name} />
@@ -35,7 +42,7 @@ const ConsultantDetails = () => {
       <Text style={styles.description}>{data.description}</Text>
       <SButton
         title={'START CHAT'}
-        onPress={() => navigation.navigate('Chat')}
+        onPress={initiateChat}
         style={styles.button}
       />
     </View>

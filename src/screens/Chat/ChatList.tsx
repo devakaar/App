@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {BASE_URL} from '../../utils';
 import {io} from 'socket.io-client';
 import AxiosInstance from '../../service/Instance';
@@ -16,21 +16,26 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const ChatList = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-
+  const isFocused = useIsFocused();
   const [data, setData] = useState<Array<Room>>([]);
 
-  let con = io(BASE_URL, {
-    transports: ['websocket'],
-  });
+  let con = io(BASE_URL, {transports: ['websocket'], forceNew: true});
 
   useEffect(() => {
-    con.on('connect', () => {
-      con.emit('getList', AxiosInstance.defaults.headers.common.token);
-      con.on('list', (list: Array<Room>) => {
-        setData(list);
+    if (isFocused) {
+      con.connect();
+      con.on('connect', () => {
+        con.emit('joinList', AxiosInstance.defaults.headers.common.token);
+        con.emit('getList', AxiosInstance.defaults.headers.common.token);
+        con.on('list', (list: Array<Room>) => {
+          setData(list);
+        });
       });
-    });
-  }, []);
+    }
+    return () => {
+      con.disconnect();
+    };
+  }, [isFocused]);
 
   return (
     <View>
@@ -40,9 +45,8 @@ const ChatList = () => {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              style={{flexDirection: 'row'}}
-              //TODO get roomId
-              onPress={() => navigation.navigate('Chat', {roomId: ''})}>
+              style={styles.itemContainer}
+              onPress={() => navigation.navigate('Chat', {roomId: item._id})}>
               <Image
                 source={{uri: item.consultant.image}}
                 style={{height: 50, width: 50, borderRadius: 50}}
@@ -53,7 +57,7 @@ const ChatList = () => {
                 </Text>
                 <Text style={{color: Colors.GRAVEL_GREY}}>
                   {item.user && 'You: '}
-                  {item.lastMessage.text}
+                  {item.lastMessage?.text}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -66,4 +70,4 @@ const ChatList = () => {
 
 export default ChatList;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({itemContainer: {flexDirection: 'row'}});

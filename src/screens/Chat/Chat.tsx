@@ -12,11 +12,14 @@ import {io} from 'socket.io-client';
 import {Colors, Images} from '../../theme';
 import {BASE_URL} from '../../utils';
 import {Header} from '../../components';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import AxiosInstance from '../../service/Instance';
 
 const Chat = () => {
-  let con = io(BASE_URL, {
-    transports: ['websocket'],
-  });
+  const route = useRoute<RouteProp<RootStack, 'Chat'>>();
+  const {roomId} = route.params;
+
+  let con = io(BASE_URL, {transports: ['websocket']});
 
   const [text, setText] = useState('');
   const [msgArray, setMsgArray] = useState<Array<Message>>([]);
@@ -26,13 +29,15 @@ const Chat = () => {
   useEffect(() => {
     con.on('connect', () => {
       con.emit('joinRoom', {
-        roomId: '6378cf301132f78a72d699cd', //TODO from Props
+        roomId: roomId,
       });
       con.emit('getMessages', {
-        roomId: '6378cf301132f78a72d699cd', //TODO from Props
+        roomId: roomId,
         number: 0,
       });
       con.on('history', (msg: Array<Message>) => {
+        console.log('here');
+
         setMsgArray(prev => [...prev, ...msg.reverse()]);
       });
       con.on('msg', (msg: Array<Message>) => {
@@ -43,15 +48,18 @@ const Chat = () => {
           flatListRef.current?.scrollToIndex({index: 0});
         }
       });
-      return () => con.close();
     });
+    return () => {
+      con.close();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = () => {
     let msg = {
       text: text.trim(),
-      roomId: '6378cf301132f78a72d699cd', //TODO from Props
-      user: '636f848d3d26ed02b00d4501', //! @Praful change this to consultant and get consultant id from props
+      roomId: roomId,
+      user: AxiosInstance.defaults.headers.common.token, //! @Praful change this to consultant and get consultant id from props
     };
     if (msg.text) {
       con.emit('msg', msg);
@@ -87,7 +95,7 @@ const Chat = () => {
         }}
         onEndReached={() => {
           con.emit('getMessages', {
-            roomId: '6378cf301132f78a72d699cd',
+            roomId: roomId,
             number: msgArray.length,
           });
         }}

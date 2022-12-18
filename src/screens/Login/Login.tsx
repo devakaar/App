@@ -53,7 +53,7 @@ const Login = () => {
       storeData(apiResponse.token ?? '');
       navigation.navigate('BottomTabs');
     } catch (err: any) {
-      Alert.alert(err);
+      // Alert.alert(err);
     }
   };
 

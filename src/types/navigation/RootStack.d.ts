@@ -3,5 +3,5 @@ type RootStack = {
   Login: undefined;
   BottomTabs: undefined;
   ConsultantDetails: {id: string};
-  Chat?: {roomId: string};
+  Chat: {roomId: string};
 };
