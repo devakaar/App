@@ -56,7 +56,7 @@ const ChatList = () => {
                   {item.consultant.name}
                 </Text>
                 <Text style={{color: Colors.GRAVEL_GREY}}>
-                  {item.user && 'You: '}
+                  {item.lastMessage?.user && 'You: '}
                   {item.lastMessage?.text}
                 </Text>
               </View>

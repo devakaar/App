@@ -36,8 +36,6 @@ const Chat = () => {
         number: 0,
       });
       con.on('history', (msg: Array<Message>) => {
-        console.log('here');
-
         setMsgArray(prev => [...prev, ...msg.reverse()]);
       });
       con.on('msg', (msg: Array<Message>) => {
