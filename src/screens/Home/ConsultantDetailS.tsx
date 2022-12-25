@@ -30,7 +30,7 @@ const ConsultantDetails = () => {
 
   const initiateChat = () => {
     ChatApi.createChat({consultantId: id}).then(res =>
-      navigation.navigate('Chat', {roomId: res.data.data._id}),
+      navigation.navigate('Chat', {roomId: res.data.data._id, name: data.name}),
     );
   };
 

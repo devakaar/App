@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {io} from 'socket.io-client';
 import {Colors, Images} from '../../theme';
 import {BASE_URL} from '../../utils';
@@ -17,12 +18,16 @@ import AxiosInstance from '../../service/Instance';
 
 const Chat = () => {
   const route = useRoute<RouteProp<RootStack, 'Chat'>>();
-  const {roomId} = route.params;
+  const {roomId, name} = route.params;
 
   let con = io(BASE_URL, {transports: ['websocket']});
 
   const [text, setText] = useState('');
   const [msgArray, setMsgArray] = useState<Array<Message>>([]);
+  const [datePicker, setDatePicker] = useState<boolean>(false);
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+  const [mode, setMode] = useState('date');
 
   const flatListRef = useRef<FlatList>(null);
 
@@ -65,9 +70,33 @@ const Chat = () => {
     setText('');
   };
 
+  const scheduleVideoCall = () => {
+    setDatePicker(true);
+  };
+
+  const showDatepicker = () => {
+    setMode('date');
+  };
+
+  const showTimepicker = () => {
+    setMode('time');
+  };
+
+  const onChange = (event, selectedDate) => {
+    console.log('heytyyey', selectedDate);
+    const currentDate = selectedDate;
+    //setDatePicker(false);
+    setDate(currentDate);
+    //showTimepicker()
+  };
+
   return (
     <View style={styles.parent}>
-      <Header title="Samyak Agrawal" />
+      <Header
+        title={name}
+        rightIcon={'video-call'}
+        onPressRightIcon={scheduleVideoCall}
+      />
       <FlatList
         inverted
         ref={flatListRef}
@@ -111,6 +140,16 @@ const Chat = () => {
           <Image source={Images.chat_send} style={styles.sendImage} />
         </TouchableOpacity>
       </View>
+      {datePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          onChange={onChange}
+          minimumDate={new Date()}
+        />
+      )}
     </View>
   );
 };

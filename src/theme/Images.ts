@@ -4,4 +4,5 @@ export default {
   gs_curves: require('../assets/images/login_curves.png'),
   logo: require('../assets/images/logo.png'),
   chat_send: require('../assets/images/chat_send.png'),
+  upcoming_meetings: require('../assets/images/upcoming_meetings.png'),
 };

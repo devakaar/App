@@ -42,11 +42,11 @@ const Login = () => {
         } catch (error) {}
       }
       const body = {
-        email: user?.email ?? '',
-        password: user?.id ?? '',
-        name: user?.name ?? user?.givenName ?? 'User',
+        email: user?.email || 'infoindore7@gmail.com',
+        password: user?.id || '12345',
+        name: user?.name ? user?.givenName : 'User',
         fcmToken: 'ABCDEF',
-        avatar: user?.photo,
+        avatar: user?.photo || '',
       };
       const apiResponse = (await LoginApi.login(body)).data.data;
       AxiosInstance.defaults.headers.common.token = apiResponse.token;

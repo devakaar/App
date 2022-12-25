@@ -8,8 +8,15 @@ import {DEVICE_WIDTH} from '../utils';
 type Props = {
   title: string;
   canGoBack?: boolean;
+  rightIcon?: string;
+  onPressRightIcon?: () => void;
 };
-const Header: React.FC<Props> = ({title, canGoBack = true}) => {
+const Header: React.FC<Props> = ({
+  title,
+  canGoBack = true,
+  rightIcon,
+  onPressRightIcon,
+}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.parent}>
@@ -24,6 +31,15 @@ const Header: React.FC<Props> = ({title, canGoBack = true}) => {
         />
       )}
       <Text style={styles.title}>{title}</Text>
+      {rightIcon && (
+        <MaterialIcons
+          name={rightIcon}
+          color={Colors.WHITE}
+          size={30}
+          onPress={onPressRightIcon}
+          style={styles.rightIcon}
+        />
+      )}
     </View>
   );
 };
@@ -42,6 +58,11 @@ const styles = StyleSheet.create({
   arrow: {
     position: 'absolute',
     left: 0,
+    padding: 8,
+  },
+  rightIcon: {
+    position: 'absolute',
+    right: 0,
     padding: 8,
   },
   title: {

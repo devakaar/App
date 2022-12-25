@@ -46,7 +46,12 @@ const ChatList = () => {
           return (
             <TouchableOpacity
               style={styles.itemContainer}
-              onPress={() => navigation.navigate('Chat', {roomId: item._id})}>
+              onPress={() =>
+                navigation.navigate('Chat', {
+                  roomId: item._id,
+                  name: item.consultant.name,
+                })
+              }>
               <Image
                 source={{uri: item.consultant.image}}
                 style={{height: 50, width: 50, borderRadius: 50}}
