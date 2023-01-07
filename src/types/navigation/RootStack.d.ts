@@ -4,4 +4,5 @@ type RootStack = {
   BottomTabs: undefined;
   ConsultantDetails: {id: string};
   Chat: {roomId: string; name: string};
+  CallScreen: undefined;
 };
