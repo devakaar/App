@@ -39,8 +39,9 @@ const Chat = () => {
       con.emit('getMessages', {
         roomId: roomId,
         number: 0,
+        type: 'User',
       });
-      con.on('history', (msg: Array<Message>) => {
+      con.on('historyUser', (msg: Array<Message>) => {
         setMsgArray(prev => [...prev, ...msg.reverse()]);
       });
       con.on('msg', (msg: Array<Message>) => {

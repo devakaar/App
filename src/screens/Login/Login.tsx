@@ -44,9 +44,9 @@ const Login = () => {
       const body = {
         email: user?.email || 'infoindore7@gmail.com',
         password: user?.id || '12345',
-        name: user?.name ? user?.givenName : 'User',
+        name: user?.name ? user?.name : 'User',
         fcmToken: 'ABCDEF',
-        avatar: user?.photo || '',
+        image: user?.photo || '',
       };
       const apiResponse = (await LoginApi.login(body)).data.data;
       AxiosInstance.defaults.headers.common.token = apiResponse.token;
