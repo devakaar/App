@@ -1,54 +1,59 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Button, View, StatusBar} from 'react-native';
 import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 
-const CallScreen = () => {
-  console.log('in callscreeen');
+const CallScreen = ({navigation}) => {
+  const url = 'https://meet.jit.si/exemples123';
+  const userInfo = {
+    displayName: 'Praful',
+    email: 'infoindore7@gmail.com',
+    avatar: 'https:/gravatar.com/avatar/abc123',
+  };
+  const options = {
+    audioMuted: false,
+    audioOnly: false,
+    videoMuted: false,
+    subject: 'Meeting subject',
+  };
+  const meetFeatureFlags = {
+    addPeopleEnabled: false,
+    calendarEnabled: false,
+    callIntegrationEnabled: false,
+    chatEnabled: false,
+    closeCaptionsEnabled: false,
+    inviteEnabled: false,
+    androidScreenSharingEnabled: true,
+    liveStreamingEnabled: false,
+    meetingNameEnabled: false,
+    meetingPasswordEnabled: false,
+    pipEnabled: false,
+    kickOutEnabled: false,
+    conferenceTimerEnabled: true,
+    videoShareButtonEnabled: false,
+    recordingEnabled: false,
+    reactionsEnabled: false,
+    raiseHandEnabled: false,
+    tileViewEnabled: false,
+    toolboxAlwaysVisible: false,
+    toolboxEnabled: true,
+    welcomePageEnabled: false,
+    'car-mode.enabled': false,
+    'speakerstats.enabled': false,
+    'video-share.enabled': false,
+    'lobby-mode.enabled': true,
+    'help.enabled': false,
+    'security-options.enabled': false,
+  };
   useEffect(() => {
-    startVideoCall();
+    // startVideoCall();
   }, []);
 
-  const startVideoCall = async () => {
-    setTimeout(() => {
-      const url = 'https://meet.jit.si/exemple';
-      const userInfo = {
-        displayName: 'Praful',
-        email: 'infoindore7@gmail.com',
-        avatar: 'https:/gravatar.com/avatar/abc123',
-      };
-      const options = {
-        audioMuted: false,
-        audioOnly: false,
-        videoMuted: false,
-        subject: 'Meeting subject',
-      };
-      const meetFeatureFlags = {
-        addPeopleEnabled: true,
-        calendarEnabled: true,
-        callIntegrationEnabled: true,
-        chatEnabled: true,
-        closeCaptionsEnabled: true,
-        inviteEnabled: true,
-        androidScreenSharingEnabled: true,
-        liveStreamingEnabled: true,
-        meetingNameEnabled: true,
-        meetingPasswordEnabled: true,
-        pipEnabled: true,
-        kickOutEnabled: true,
-        conferenceTimerEnabled: true,
-        videoShareButtonEnabled: true,
-        recordingEnabled: true,
-        reactionsEnabled: true,
-        raiseHandEnabled: true,
-        tileViewEnabled: true,
-        toolboxAlwaysVisible: false,
-        toolboxEnabled: true,
-        welcomePageEnabled: false,
-      };
-      JitsiMeet.call(url, userInfo, options, meetFeatureFlags);
-      /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
-      /* Você pode terminar programaticamente a chamada com JitsiMeet.endCall () */
-    }, 3000);
-  };
+  // const startVideoCall = async () => {
+  //   setTimeout(() => {
+
+  //     JitsiMeet.call(url, userInfo, options, meetFeatureFlags);
+  //   }, 2000);
+  // };
 
   useEffect(() => {
     return () => {
@@ -57,32 +62,31 @@ const CallScreen = () => {
   });
 
   function onConferenceTerminated(nativeEvent: any) {
-    /* Conference terminated event */
-    console.log('onConferenceTerminated', nativeEvent);
     JitsiMeet.endCall();
   }
 
   function onConferenceJoined(nativeEvent: any) {
-    /* Conference joined event */
-    console.log('onConferenceJoined', nativeEvent);
+    console.log('joined');
   }
 
   function onConferenceWillJoin(nativeEvent: any) {
-    /* Conference will join event */
-    console.log('onConferenceWillJoin', nativeEvent);
+    console.log('will');
   }
 
   return (
-    <JitsiMeetView
-      onConferenceTerminated={(e: any) => onConferenceTerminated(e)}
-      onConferenceJoined={(e: any) => onConferenceJoined(e)}
-      onConferenceWillJoin={(e: any) => onConferenceWillJoin(e)}
-      style={{
-        flex: 1,
-        height: '80%',
-        width: '100%',
-      }}
-    />
+    <View style={{flex: 1}}>
+      <JitsiMeetView
+        onConferenceTerminated={(e: any) => onConferenceTerminated(e)}
+        onConferenceJoined={(e: any) => onConferenceJoined(e)}
+        onConferenceWillJoin={(e: any) => onConferenceWillJoin(e)}
+        style={{
+          flex: 1,
+          height: '100%',
+          width: '100%',
+        }}
+        options={{url, userInfo, meetOptions: options, meetFeatureFlags}}
+      />
+    </View>
   );
 };
 

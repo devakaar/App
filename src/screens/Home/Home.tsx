@@ -66,7 +66,7 @@ const Home = () => {
 
   const onPressVideoCall = () => {
     navigation.navigate('CallScreen');
-  }
+  };
 
   return (
     <View style={styles.parent}>

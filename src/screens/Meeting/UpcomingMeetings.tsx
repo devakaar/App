@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Button, Text, View} from 'react-native';
 
-const UpcomingMeetings = () => {
+const UpcomingMeetings = ({navigation}) => {
   return (
     <View>
-      <Text>fvdfvdf</Text>
+      <Button onPress={() => navigation.navigate('CallScreen')} title="Press" />
     </View>
   );
 };
