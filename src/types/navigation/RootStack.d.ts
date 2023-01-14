@@ -5,4 +5,5 @@ type RootStack = {
   ConsultantDetails: {id: string};
   Chat: {roomId: string; name: string};
   CallScreen: undefined;
+  PaymentHistory: undefined;
 };

@@ -47,7 +47,6 @@ const Chat = () => {
       con.on('msg', (msg: Array<Message>) => {
         setMsgArray(prev => [...msg.reverse(), ...prev]);
 
-        //! @Praful change msg[0].user to msg[0].consultant
         if (msg[0].user) {
           flatListRef.current?.scrollToIndex({index: 0});
         }
@@ -63,7 +62,7 @@ const Chat = () => {
     let msg = {
       text: text.trim(),
       roomId: roomId,
-      user: AxiosInstance.defaults.headers.common.token, //! @Praful change this to consultant and get consultant id from props
+      user: AxiosInstance.defaults.headers.common.token,
     };
     if (msg.text) {
       con.emit('msg', msg);

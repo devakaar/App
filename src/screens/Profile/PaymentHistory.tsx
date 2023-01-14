@@ -1,59 +1,40 @@
 import {
+  Alert,
+  FlatList,
+  ListRenderItem,
   StyleSheet,
   Text,
   View,
-  FlatList,
-  TouchableOpacity,
-  ListRenderItem,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {BASE_URL} from '../../utils';
-import {io} from 'socket.io-client';
-import AxiosInstance from '../../service/Instance';
-import {Colors, Images} from '../../theme';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
+import {Colors, Images} from '../../theme';
 import {Header} from '../../components';
+import {OrderApi} from '../../service';
 
-const ChatList = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-  const isFocused = useIsFocused();
-  const [data, setData] = useState<Array<Room>>([]);
-
-  let con = io(BASE_URL, {transports: ['websocket'], forceNew: true});
+const PaymentHistory = () => {
+  const [data, setData] = useState<Array<OrderHistory>>([]);
 
   useEffect(() => {
-    if (isFocused) {
-      con.connect();
-      con.on('connect', () => {
-        con.emit('joinList', AxiosInstance.defaults.headers.common.token);
-        con.emit('getList', AxiosInstance.defaults.headers.common.token);
-        con.on('list', (list: Array<Room>) => {
-          setData(list);
-        });
-      });
-    }
-    return () => {
-      con.disconnect();
+    const callApi = async () => {
+      try {
+        const res = await OrderApi.getPaymentHistory();
+        setData(res.data.data);
+      } catch (err: any) {
+        Alert.alert(err);
+      }
     };
-  }, [isFocused]);
+    callApi();
+  }, []);
 
-  const chatItems: ListRenderItem<Room> = ({item}) => {
+  const chatItems: ListRenderItem<OrderHistory> = ({item}) => {
     return (
-      <TouchableOpacity
-        style={[styles.flex, styles.itemContainer]}
-        onPress={() =>
-          navigation.navigate('Chat', {
-            roomId: item._id,
-            name: item.consultant.name,
-          })
-        }>
+      <View style={[styles.flex, styles.itemContainer]}>
         <FastImage
           style={styles.image}
           source={{
-            uri: item.consultant.image || 'https://unsplash.it/400/400?image=1',
+            uri: 'https://unsplash.it/400/400?image=1',
             priority: FastImage.priority.normal,
           }}
           //resizeMode={FastImage.resizeMode.contain}
@@ -61,17 +42,18 @@ const ChatList = () => {
         />
         <View style={styles.textWrapper}>
           <View style={styles.titleWrapper}>
-            <Text style={styles.title}>{item.consultant?.name}</Text>
+            <Text style={styles.title}>{item.amount}</Text>
             <Text style={styles.text}>
-              {`${moment(item?.lastMessage?.updatedAt).format('DD/MM/YYYY')}`}
+              {`${moment(item?.createdAt).format('lll')}`}
             </Text>
           </View>
+          <Text style={styles.text}>{item.status}</Text>
           <Text style={styles.text}>
-            {item.lastMessage?.user && 'You: '}
-            {item.lastMessage?.text}
+            {item.status && 'Order ID: '}
+            {item.orderId}
           </Text>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -85,7 +67,7 @@ const ChatList = () => {
 
   return (
     <View style={styles.flex}>
-      <Header title="Chat" canGoBack={false} />
+      <Header title="Payment History" />
       <View style={styles.flex}>
         <FlatList
           keyExtractor={_item => _item._id}
@@ -98,7 +80,7 @@ const ChatList = () => {
   );
 };
 
-export default ChatList;
+export default PaymentHistory;
 
 const styles = StyleSheet.create({
   itemContainer: {

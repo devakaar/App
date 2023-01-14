@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Alert,
 } from 'react-native';
 import React from 'react';
 import {Colors, Images} from '../../theme';
@@ -36,22 +35,20 @@ const Login = () => {
         const currentUser = await GoogleSignin.getCurrentUser();
         user = currentUser?.user;
       } else {
-        try {
-          const response = await GoogleSignin.signIn();
-          user = response?.user;
-        } catch (error) {}
+        const response = await GoogleSignin.signIn();
+        user = response?.user;
+        const body = {
+          email: user?.email,
+          password: user?.id,
+          name: user?.name ?? 'USER',
+          fcmToken: 'ABCDEF',
+          image: user?.photo ?? '',
+        };
+        const apiResponse = (await LoginApi.login(body)).data.data;
+        AxiosInstance.defaults.headers.common.token = apiResponse.token;
+        storeData(apiResponse.token ?? '');
+        navigation.navigate('BottomTabs');
       }
-      const body = {
-        email: user?.email || 'infoindore7@gmail.com',
-        password: user?.id || '12345',
-        name: user?.name ? user?.name : 'User',
-        fcmToken: 'ABCDEF',
-        image: user?.photo || '',
-      };
-      const apiResponse = (await LoginApi.login(body)).data.data;
-      AxiosInstance.defaults.headers.common.token = apiResponse.token;
-      storeData(apiResponse.token ?? '');
-      navigation.navigate('BottomTabs');
     } catch (err: any) {
       // Alert.alert(err);
     }
