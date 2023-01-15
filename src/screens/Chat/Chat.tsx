@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   StyleSheet,
@@ -8,26 +9,29 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-date-picker';
+import ReactNativeModal from 'react-native-modal';
 import {io} from 'socket.io-client';
 import {Colors, Images} from '../../theme';
 import {BASE_URL} from '../../utils';
-import {Header} from '../../components';
+import {BottomView, Header, Input, SButton} from '../../components';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import AxiosInstance from '../../service/Instance';
+import {MeetingApi} from '../../service';
+import moment from 'moment';
 
 const Chat = () => {
   const route = useRoute<RouteProp<RootStack, 'Chat'>>();
-  const {roomId, name} = route.params;
-
+  const {roomId, name, consultantId} = route.params;
   let con = io(BASE_URL, {transports: ['websocket']});
 
   const [text, setText] = useState('');
   const [msgArray, setMsgArray] = useState<Array<Message>>([]);
-  const [datePicker, setDatePicker] = useState<boolean>(false);
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
-  const [mode, setMode] = useState('date');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [startPicker, setStartPicker] = useState<boolean>(false);
+  const [endPicker, setEndPicker] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<{name: string; value: string}>();
 
   const flatListRef = useRef<FlatList>(null);
 
@@ -71,23 +75,26 @@ const Chat = () => {
   };
 
   const scheduleVideoCall = () => {
-    setDatePicker(true);
+    setShowModal(true);
+    //setOpen(true);
   };
 
-  const showDatepicker = () => {
-    setMode('date');
-  };
-
-  const showTimepicker = () => {
-    setMode('time');
-  };
-
-  const onChange = (event, selectedDate) => {
-    console.log('heytyyey', selectedDate);
-    const currentDate = selectedDate;
-    //setDatePicker(false);
-    setDate(currentDate);
-    //showTimepicker()
+  const scheduleMeeting = async () => {
+    let payload: MeetingRequest = {
+      consultant: consultantId,
+      scheduledTime: startDate ?? new Date(),
+      duration: endDate?.value ?? '',
+    };
+    try {
+      const res = await MeetingApi.createMeeting(payload);
+      if (res.data.data) {
+        //Show Toast for sucess
+      } else {
+        Alert.alert(res.data.message);
+      }
+    } catch (err: any) {
+      Alert.alert(err);
+    }
   };
 
   return (
@@ -140,16 +147,79 @@ const Chat = () => {
           <Image source={Images.chat_send} style={styles.sendImage} />
         </TouchableOpacity>
       </View>
-      {datePicker && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
-          minimumDate={new Date()}
-        />
-      )}
+      <DatePicker
+        modal
+        open={startPicker}
+        date={new Date()}
+        textColor={Colors.PRIMARY}
+        minimumDate={new Date()}
+        theme={'light'}
+        title={'Choose Date and Time'}
+        androidVariant={'iosClone'}
+        onConfirm={(dateTime: any) => {
+          setStartDate(dateTime);
+          setStartPicker(false);
+        }}
+        onCancel={() => {
+          setStartPicker(false);
+        }}
+      />
+      <BottomView
+        data={[
+          {name: '10 min', value: '10000'},
+          {name: '30 min', value: '30000'},
+          {name: '1 hour', value: '60000'},
+        ]}
+        title={'Select Meeting Duration'}
+        onTouch={item => {
+          setEndDate(item);
+          setEndPicker(false);
+        }}
+        showModal={endPicker}
+        onCancel={() => {
+          setEndPicker(false);
+        }}
+      />
+      <ReactNativeModal
+        isVisible={showModal}
+        onBackdropPress={() => setShowModal(false)}>
+        <View style={styles.content}>
+          <Text style={styles.modalHeaderStyle}>{'Please Select'}</Text>
+          <Input
+            enabled={false}
+            label={'Schedule Time'}
+            rightIcon={'today'}
+            value={startDate ? moment(startDate).format('lll') : ''}
+            onPress={() => setStartPicker(true)}
+          />
+          {startDate && (
+            <Input
+              enabled={false}
+              label={'Meeting Duration'}
+              rightIcon={'today'}
+              value={endDate?.name}
+              onPress={() => setEndPicker(true)}
+            />
+          )}
+          <View style={styles.modalButtons}>
+            <SButton
+              title={'Cancel'}
+              onPress={() => {
+                setStartDate(undefined);
+                setEndDate(undefined);
+                setShowModal(false);
+              }}
+              width={'full'}
+            />
+            <SButton
+              title={'Schedule'}
+              onPress={scheduleMeeting}
+              width={'full'}
+              disabled={startDate === undefined || endDate === undefined}
+            />
+          </View>
+        </View>
+      </ReactNativeModal>
     </View>
   );
 };
@@ -213,5 +283,27 @@ const styles = StyleSheet.create({
     width: 24,
     resizeMode: 'contain',
     marginLeft: 2,
+  },
+  flex: {
+    flex: 1,
+  },
+  content: {
+    backgroundColor: 'white',
+    padding: 22,
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalHeaderStyle: {
+    fontSize: 24,
+    color: Colors.BLACK,
+    paddingVertical: 10,
+  },
+  contentTitle: {
+    fontSize: 20,
+    marginBottom: 12,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

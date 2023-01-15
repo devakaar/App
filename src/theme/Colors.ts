@@ -4,4 +4,7 @@ export default {
   WHITE: '#FFFFFF',
   CHARCOAL_GREY: '#333333',
   GRAVEL_GREY: '#666666',
+  BLACK: '#000000',
+  RED: '#FF0000',
+  GRAY_THREE: '#D3D3D3',
 };

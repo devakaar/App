@@ -6,15 +6,24 @@ type Props = {
   title: string;
   onPress: () => void;
   width?: 'full' | 'flex-start' | 'center' | 'flex-end';
-  style: ViewStyle;
+  style?: ViewStyle;
+  disabled?: boolean;
 };
-const SButton: React.FC<Props> = ({title, onPress, width, style}) => {
+const SButton: React.FC<Props> = ({title, onPress, width, style, disabled}) => {
   const BUTTON_WIDTH = width === 'full' ? 'stretch' : width;
 
   return (
     <TouchableOpacity
-      style={[{alignSelf: BUTTON_WIDTH}, styles.container, style]}
-      onPress={onPress}>
+      style={[
+        {
+          alignSelf: BUTTON_WIDTH,
+          backgroundColor: disabled ? Colors.GRAY_THREE : Colors.SECONDARY,
+        },
+        styles.container,
+        style,
+      ]}
+      onPress={onPress}
+      disabled={disabled}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
@@ -24,7 +33,6 @@ export default SButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.SECONDARY,
     paddingHorizontal: 24,
     paddingVertical: 16,
     borderRadius: 26,

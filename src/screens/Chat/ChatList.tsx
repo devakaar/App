@@ -48,6 +48,7 @@ const ChatList = () => {
           navigation.navigate('Chat', {
             roomId: item._id,
             name: item.consultant.name,
+            consultantId: item.consultant._id,
           })
         }>
         <FastImage
