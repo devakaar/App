@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   View,
   ListRenderItem,
+  Alert,
+  Linking,
 } from 'react-native';
 import {Header} from '../../components';
 import {Colors, Images} from '../../theme';
@@ -21,7 +23,6 @@ const UpcomingMeetings = () => {
   const [data, setData] = useState<Array<Meeting>>([]);
 
   useEffect(() => {
-    requestCameraPermission();
     getUpcomingMeetings();
   }, []);
 
@@ -34,39 +35,55 @@ const UpcomingMeetings = () => {
       .catch(err => console.log('error ', err));
   };
 
-  const requestCameraPermission = async () => {
+  const requestCameraPermission = async (item: Meeting) => {
     try {
+      PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA).then(
+        granted => {
+          if (granted) {
+            navigation.navigate('CallScreen', {item});
+          } else {
+            PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.CAMERA,
+            ).then(permissionStatus => {
+              if (permissionStatus === PermissionsAndroid.RESULTS.GRANTED) {
+                navigation.navigate('CallScreen', {item});
+              } else {
+                Alert.alert(
+                  'Camera Permission Denied',
+                  'Please Grant Camera Permission from Settings',
+                  [
+                    {
+                      text: 'Go to Settings',
+                      onPress: () => Linking.openSettings(),
+                    },
+                  ],
+                );
+              }
+            });
+          }
+        },
+      );
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
-          title: 'Cool Photo App Camera Permission',
-          message:
-            'Cool Photo App needs access to your camera ' +
-            'so you can take awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
+          title: 'Salhakaar Camera Permission',
+          message: 'Salhakaar needs access to your camera ',
           buttonPositive: 'OK',
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the camera');
       } else {
-        console.log('Camera permission denied');
       }
     } catch (err) {
       console.warn(err);
     }
   };
 
-  const onPressVideoCall = (item: Meeting) => {
-    navigation.navigate('CallScreen', {item});
-  };
-
   const chatItems: ListRenderItem<Meeting> = ({item}) => {
     return (
       <TouchableOpacity
         style={[styles.listContainer, styles.itemContainer]}
-        onPress={() => onPressVideoCall(item)}>
+        onPress={() => requestCameraPermission(item)}>
         <FastImage
           style={styles.image}
           source={{

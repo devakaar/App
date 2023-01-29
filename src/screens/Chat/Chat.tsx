@@ -88,6 +88,7 @@ const Chat = () => {
     try {
       const res = await MeetingApi.createMeeting(payload);
       if (res.data.data) {
+        setShowModal(false);
         //Show Toast for sucess
       } else {
         Alert.alert(res.data.message);
