@@ -20,7 +20,7 @@ const Header: React.FC<Props> = ({
   const navigation = useNavigation();
   return (
     <View style={styles.parent}>
-      <StatusBar backgroundColor={Colors.PRIMARY} barStyle="light-content" />
+      <StatusBar backgroundColor={Colors.SECONDARY} barStyle="light-content" />
       {canGoBack && (
         <MaterialIcons
           name="arrow-back"
@@ -48,12 +48,11 @@ export default Header;
 
 const styles = StyleSheet.create({
   parent: {
-    backgroundColor: Colors.PRIMARY,
+    backgroundColor: Colors.SECONDARY,
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 5,
   },
   arrow: {
     position: 'absolute',
