@@ -20,6 +20,7 @@ import StaggeredList from '@mindinventory/react-native-stagger-view';
 const Home = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
   const [data, setData] = useState<Array<Consultant>>([]);
+  const pattern = [0, 1, 1, 0];
 
   useEffect(() => {
     const callApi = async () => {
@@ -33,14 +34,16 @@ const Home = () => {
     callApi();
   }, []);
 
-  const renderItems = ({item, index}: any) => {
-    let randomHeight = index % 2 === 0 ? 250 : 300; //Number(Math.random() * (300 - 250) + 250);
+  const renderItems = (items: any) => {
+    const {item, i} = items;
+    console.log(items);
+
+    let randomHeight = pattern[i % pattern.length] ? 300 : 250; //Number(Math.random() * (300 - 250) + 250);
     return (
       <View
         style={{
           width: (Dimensions.get('window').width - 18) / 2,
           height: randomHeight,
-          backgroundColor: 'gray',
           margin: 4,
           borderRadius: 18,
           overflow: 'hidden',
