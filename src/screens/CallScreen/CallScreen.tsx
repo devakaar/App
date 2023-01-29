@@ -1,9 +1,12 @@
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {Button, View, StatusBar} from 'react-native';
 import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 
-const CallScreen = ({navigation}) => {
-  const url = 'https://meet.jit.si/exemples123';
+const CallScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
+  const url = 'https://meet.jit.si/exemples125';
   const userInfo = {
     displayName: 'Praful',
     email: 'infoindore7@gmail.com',
@@ -34,9 +37,9 @@ const CallScreen = ({navigation}) => {
     reactionsEnabled: false,
     raiseHandEnabled: false,
     tileViewEnabled: false,
-    toolboxAlwaysVisible: false,
+    toolboxAlwaysVisible: true,
     toolboxEnabled: true,
-    welcomePageEnabled: false,
+    welcomePageEnabled: true,
     'car-mode.enabled': false,
     'speakerstats.enabled': false,
     'video-share.enabled': false,
@@ -62,7 +65,9 @@ const CallScreen = ({navigation}) => {
   });
 
   function onConferenceTerminated(nativeEvent: any) {
+    console.log('Terminate');
     JitsiMeet.endCall();
+    navigation.navigate('BottomTabs');
   }
 
   function onConferenceJoined(nativeEvent: any) {
