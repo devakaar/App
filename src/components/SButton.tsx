@@ -1,4 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import {Colors} from '../theme';
 
@@ -8,8 +14,16 @@ type Props = {
   width?: 'full' | 'flex-start' | 'center' | 'flex-end';
   style?: ViewStyle;
   disabled?: boolean;
+  textStyle?: TextStyle;
 };
-const SButton: React.FC<Props> = ({title, onPress, width, style, disabled}) => {
+const SButton: React.FC<Props> = ({
+  title,
+  onPress,
+  width,
+  style,
+  disabled,
+  textStyle,
+}) => {
   const BUTTON_WIDTH = width === 'full' ? 'stretch' : width;
 
   return (
@@ -24,7 +38,7 @@ const SButton: React.FC<Props> = ({title, onPress, width, style, disabled}) => {
       ]}
       onPress={onPress}
       disabled={disabled}>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[styles.text, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };

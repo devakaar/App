@@ -40,21 +40,40 @@ const ConsultantDetails = () => {
   };
 
   return (
-    <View style={styles.parent}>
+    <View style={{flex: 1}}>
       <Header />
-      <Text style={styles.name}>{data.name}</Text>
-      <View style={{flexDirection: 'row', marginVertical: 10}}>
-        <ImageWithText icon={'star'} title={data.avgRating} marginRight={20} />
-        <ImageWithText icon={'rupee'} title={data.price} />
-      </View>
-      {/* <Image source={{uri: data.image}} style={styles.image} /> */}
+      <View style={styles.parent}>
+        <Text style={styles.name}>{data.name}</Text>
+        <View style={{flexDirection: 'row', marginTop: 20}}>
+          <ImageWithText
+            icon={'star'}
+            title={data.avgRating}
+            marginRight={30}
+          />
+          <ImageWithText icon={'rupee'} title={data.price} />
+        </View>
 
-      {/* <Text style={styles.description}>{data.description}</Text>
-      <SButton
-        title={'START CHAT'}
-        onPress={initiateChat}
-        style={styles.button}
-      /> */}
+        <View
+          style={{
+            elevation: 5,
+            borderRadius: 18,
+            backgroundColor: '#4cb1ff',
+            flex: 1,
+            marginTop: 50,
+            marginBottom: 30,
+            padding: 18,
+          }}>
+          <Image source={{uri: data.image}} style={styles.image} />
+          <Text style={styles.description}>{data.description}</Text>
+          <SButton
+            title={'START CHAT'}
+            onPress={initiateChat}
+            style={styles.button}
+            width={'flex-end'}
+            textStyle={styles.buttonText}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -63,8 +82,8 @@ export default ConsultantDetails;
 
 const ImageWithText = ({icon, title, marginRight}) => {
   return (
-    <View style={{flexDirection: 'row', marginRight}}>
-      <FonstAwesome name={icon} color={Colors.GOLDEN_ROD} size={24} />
+    <View style={{flexDirection: 'row', marginRight, alignItems: 'center'}}>
+      <FonstAwesome name={icon} color={Colors.GOLDEN_ROD} size={20} />
       <Text style={styles.text}>{title}</Text>
     </View>
   );
@@ -72,30 +91,38 @@ const ImageWithText = ({icon, title, marginRight}) => {
 
 const styles = StyleSheet.create({
   parent: {flex: 1, backgroundColor: Colors.WHITE, paddingHorizontal: 20},
-  image: {height: 150, width: '100%', resizeMode: 'contain'},
+  image: {
+    height: 150,
+    width: 150,
+    borderRadius: 150,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    position: 'absolute',
+    marginTop: -50,
+  },
   name: {
     color: Colors.CHARCOAL_GREY,
     fontSize: 34,
     fontWeight: 'bold',
-    marginTop: 18,
   },
   description: {
-    color: Colors.CHARCOAL_GREY,
-    fontSize: 16,
-    fontWeight: '500',
-    alignSelf: 'center',
-    marginTop: 18,
+    color: Colors.WHITE,
+    fontSize: 18,
+    marginTop: 120,
+    flex: 1,
   },
   button: {
-    position: 'absolute',
-    bottom: 12,
-    width: '95%',
-    marginHorizontal: 0,
-    alignSelf: 'center',
+    borderRadius: 8,
+    backgroundColor: Colors.WHITE,
+  },
+  buttonText: {
+    color: Colors.CHARCOAL_GREY,
+    fontSize: 14,
   },
   text: {
     color: Colors.CHARCOAL_GREY,
     fontSize: 18,
     fontWeight: 'bold',
+    marginLeft: 8,
   },
 });

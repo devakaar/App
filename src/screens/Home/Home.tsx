@@ -34,7 +34,7 @@ const Home = () => {
   }, []);
 
   const renderItems = ({item, i}: any) => {
-    let randomHeight = pattern[i % pattern.length] ? 250 : 200; //Number(Math.random() * (300 - 250) + 250);
+    let randomHeight = pattern[i % pattern.length] ? 200 : 200; //Number(Math.random() * (300 - 250) + 250);
     return (
       <TouchableOpacity
         key={item.id}
@@ -55,7 +55,7 @@ const Home = () => {
             height: randomHeight - 65,
             width: DEVICE_WIDTH / 2,
           }}
-          resizeMode={'cover'}
+          resizeMode={'contain'}
         />
         <Text
           style={{

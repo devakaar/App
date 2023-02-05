@@ -9,14 +9,12 @@ type Props = {
   title?: string;
   canGoBack?: boolean;
   rightIcon?: string;
-  padding?: number;
   onPressRightIcon?: () => void;
 };
 const Header: React.FC<Props> = ({
   title,
   canGoBack = true,
   rightIcon,
-  padding,
   onPressRightIcon,
 }) => {
   const navigation = useNavigation();
@@ -29,7 +27,7 @@ const Header: React.FC<Props> = ({
           color={Colors.BLACK}
           size={24}
           onPress={() => navigation.goBack()}
-          style={[styles.arrow, {padding}]}
+          style={styles.arrow}
         />
       )}
       <Text style={styles.title}>{title}</Text>
@@ -54,22 +52,15 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
-  arrow: {
-    position: 'absolute',
-    left: 0,
-  },
-  rightIcon: {
-    position: 'absolute',
-    right: 0,
-    padding: 8,
-  },
+  arrow: {},
+  rightIcon: {},
   title: {
     color: Colors.BLACK,
     fontSize: 18,
     fontWeight: 'bold',
-    width: DEVICE_WIDTH - 82,
     textAlign: 'center',
+    flex: 1,
   },
 });
