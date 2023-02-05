@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   text: {
-    color: Colors.PRIMARY,
+    color: Colors.CHARCOAL_GREY,
     marginLeft: 5,
     fontWeight: '700',
   },

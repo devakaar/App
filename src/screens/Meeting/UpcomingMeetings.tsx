@@ -107,7 +107,11 @@ const UpcomingMeetings = () => {
 
   return (
     <View style={styles.listContainer}>
-      <Header title="Upcoming Meetings" canGoBack={false} />
+      <Header
+        title="Upcoming Meetings"
+        canGoBack={false}
+        backgroundColor={Colors.SECONDARY}
+      />
       <View style={styles.listContainer}>
         <FlatList
           keyExtractor={_item => _item._id}
@@ -134,6 +138,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
+    backgroundColor: Colors.WHITE,
   },
   image: {height: 50, width: 50, borderRadius: 25},
   textWrapper: {paddingLeft: 20, flex: 1},

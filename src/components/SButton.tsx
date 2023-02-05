@@ -31,7 +31,7 @@ const SButton: React.FC<Props> = ({
       style={[
         {
           alignSelf: BUTTON_WIDTH,
-          backgroundColor: disabled ? Colors.GRAY_THREE : Colors.SECONDARY,
+          backgroundColor: disabled ? Colors.GRAY_THREE : Colors.PRIMARY,
         },
         styles.container,
         style,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 16,
     borderRadius: 26,
-    marginTop: 32,
+    marginTop: 10,
     marginHorizontal: 16,
   },
   text: {

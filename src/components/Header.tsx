@@ -21,7 +21,11 @@ const Header: React.FC<Props> = ({
 }) => {
   const navigation = useNavigation();
   return (
-    <View style={[styles.parent, {backgroundColor}]}>
+    <View
+      style={[
+        styles.parent,
+        {backgroundColor: backgroundColor ? backgroundColor : Colors.WHITE},
+      ]}>
       <StatusBar
         backgroundColor={backgroundColor ? backgroundColor : Colors.WHITE}
         barStyle="dark-content"
@@ -53,7 +57,6 @@ export default Header;
 
 const styles = StyleSheet.create({
   parent: {
-    backgroundColor: Colors.WHITE,
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',

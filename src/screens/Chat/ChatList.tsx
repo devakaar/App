@@ -86,8 +86,12 @@ const ChatList = () => {
 
   return (
     <View style={styles.flex}>
-      <Header title="Chat" canGoBack={false} />
-      <View style={styles.flex}>
+      <Header
+        title="Chat"
+        canGoBack={false}
+        backgroundColor={Colors.SECONDARY}
+      />
+      <View style={[styles.flex, {backgroundColor: Colors.WHITE}]}>
         <FlatList
           keyExtractor={_item => _item._id}
           data={data}

@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     maxWidth: '75%',
   },
   userMsgContainer: {
-    backgroundColor: Colors.SECONDARY,
+    backgroundColor: Colors.CHAT_SECONDARY,
     alignSelf: 'flex-end',
     marginRight: 8,
   },
