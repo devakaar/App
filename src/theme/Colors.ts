@@ -7,4 +7,5 @@ export default {
   BLACK: '#000000',
   RED: '#FF0000',
   GRAY_THREE: '#D3D3D3',
+  GOLDEN_ROD: '#F1AF09',
 };

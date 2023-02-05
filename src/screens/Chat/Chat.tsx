@@ -103,6 +103,7 @@ const Chat = () => {
       <Header
         title={name}
         rightIcon={'video-call'}
+        padding={8}
         onPressRightIcon={scheduleVideoCall}
       />
       <FlatList

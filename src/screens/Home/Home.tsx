@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ConsultantApi} from '../../service';
@@ -33,7 +34,7 @@ const Home = () => {
   }, []);
 
   const renderItems = ({item, i}: any) => {
-    let randomHeight = pattern[i % pattern.length] ? 300 : 250; //Number(Math.random() * (300 - 250) + 250);
+    let randomHeight = pattern[i % pattern.length] ? 250 : 200; //Number(Math.random() * (300 - 250) + 250);
     return (
       <TouchableOpacity
         key={item.id}
@@ -46,14 +47,15 @@ const Home = () => {
           overflow: 'hidden',
           elevation: 5,
           backgroundColor: Colors.WHITE,
-          marginVertical: 10,
+          marginVertical: 6,
         }}>
         <Image
           source={{uri: item.image}}
           style={{
-            height: randomHeight - 90,
+            height: randomHeight - 65,
             width: DEVICE_WIDTH / 2,
           }}
+          resizeMode={'cover'}
         />
         <Text
           style={{
@@ -78,22 +80,23 @@ const Home = () => {
     );
   };
 
-  return (
-    <View style={styles.parent}>
+  const header = () => {
+    return (
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
           marginHorizontal: 20,
+          paddingVertical: 8,
         }}>
         <Text
           style={{
-            fontSize: 44,
+            fontSize: 34,
             fontWeight: '600',
             color: Colors.BLACK,
           }}>
-          {'Hi!'}
+          {'Welcome!'}
         </Text>
         <View style={{height: 40, width: 40, alignItems: 'center'}}>
           <Image
@@ -106,11 +109,19 @@ const Home = () => {
           />
         </View>
       </View>
+    );
+  };
+
+  return (
+    <View style={styles.parent}>
+      {/* <StatusBar backgroundColor={Colors.WHITE} barStyle={'dark-content'} /> */}
       <StaggeredList
         data={data}
+        ListHeaderComponent={header()}
         animationType={'FADE_IN_FAST'}
         showsVerticalScrollIndicator={false}
         renderItem={renderItems}
+        style={{marginBottom: 40}}
         //isLoading={isLoading}
         // LoadingView={
         //   <View style={styles.activityIndicatorWrapper}>

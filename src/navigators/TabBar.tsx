@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   parent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.PRIMARY,
+    backgroundColor: Colors.WHITE,
     marginHorizontal: 20,
     borderRadius: 15,
     paddingVertical: 10,

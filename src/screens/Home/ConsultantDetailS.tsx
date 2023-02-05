@@ -5,6 +5,7 @@ import {ConsultantApi} from '../../service';
 import {Colors} from '../../theme';
 import {Header, SButton} from '../../components';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import FonstAwesome from 'react-native-vector-icons/FontAwesome';
 import ChatApi from '../../service/ChatApi';
 
 const ConsultantDetails = () => {
@@ -40,29 +41,42 @@ const ConsultantDetails = () => {
 
   return (
     <View style={styles.parent}>
-      <Header title={data.name} />
-      <Image source={{uri: data.image}} style={styles.image} />
+      <Header />
       <Text style={styles.name}>{data.name}</Text>
-      <Text style={styles.description}>{data.description}</Text>
+      <View style={{flexDirection: 'row', marginVertical: 10}}>
+        <ImageWithText icon={'star'} title={data.avgRating} marginRight={20} />
+        <ImageWithText icon={'rupee'} title={data.price} />
+      </View>
+      {/* <Image source={{uri: data.image}} style={styles.image} /> */}
+
+      {/* <Text style={styles.description}>{data.description}</Text>
       <SButton
         title={'START CHAT'}
         onPress={initiateChat}
         style={styles.button}
-      />
+      /> */}
     </View>
   );
 };
 
 export default ConsultantDetails;
 
+const ImageWithText = ({icon, title, marginRight}) => {
+  return (
+    <View style={{flexDirection: 'row', marginRight}}>
+      <FonstAwesome name={icon} color={Colors.GOLDEN_ROD} size={24} />
+      <Text style={styles.text}>{title}</Text>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-  parent: {flex: 1},
+  parent: {flex: 1, backgroundColor: Colors.WHITE, paddingHorizontal: 20},
   image: {height: 150, width: '100%', resizeMode: 'contain'},
   name: {
     color: Colors.CHARCOAL_GREY,
-    fontSize: 18,
+    fontSize: 34,
     fontWeight: 'bold',
-    alignSelf: 'center',
     marginTop: 18,
   },
   description: {
@@ -78,5 +92,10 @@ const styles = StyleSheet.create({
     width: '95%',
     marginHorizontal: 0,
     alignSelf: 'center',
+  },
+  text: {
+    color: Colors.CHARCOAL_GREY,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

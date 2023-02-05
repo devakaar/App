@@ -6,35 +6,37 @@ import {useNavigation} from '@react-navigation/native';
 import {DEVICE_WIDTH} from '../utils';
 
 type Props = {
-  title: string;
+  title?: string;
   canGoBack?: boolean;
   rightIcon?: string;
+  padding?: number;
   onPressRightIcon?: () => void;
 };
 const Header: React.FC<Props> = ({
   title,
   canGoBack = true,
   rightIcon,
+  padding,
   onPressRightIcon,
 }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.parent}>
-      <StatusBar backgroundColor={Colors.SECONDARY} barStyle="light-content" />
+      <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
       {canGoBack && (
         <MaterialIcons
           name="arrow-back"
-          color={Colors.WHITE}
+          color={Colors.BLACK}
           size={24}
           onPress={() => navigation.goBack()}
-          style={styles.arrow}
+          style={[styles.arrow, {padding}]}
         />
       )}
       <Text style={styles.title}>{title}</Text>
       {rightIcon && (
         <MaterialIcons
           name={rightIcon}
-          color={Colors.WHITE}
+          color={Colors.BLACK}
           size={30}
           onPress={onPressRightIcon}
           style={styles.rightIcon}
@@ -48,7 +50,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   parent: {
-    backgroundColor: Colors.SECONDARY,
+    backgroundColor: Colors.WHITE,
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
@@ -57,7 +59,6 @@ const styles = StyleSheet.create({
   arrow: {
     position: 'absolute',
     left: 0,
-    padding: 8,
   },
   rightIcon: {
     position: 'absolute',
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   title: {
-    color: Colors.WHITE,
+    color: Colors.BLACK,
     fontSize: 18,
     fontWeight: 'bold',
     width: DEVICE_WIDTH - 82,
