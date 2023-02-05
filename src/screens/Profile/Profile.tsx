@@ -1,12 +1,22 @@
-import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  View,
+  Image,
+  StatusBar,
+} from 'react-native';
 import React, {useState} from 'react';
 import RazorpayCheckout from 'react-native-razorpay';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Colors} from '../../theme';
+import {Colors, Images} from '../../theme';
 import {OrderApi} from '../../service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Header} from '../../components';
 
 const Profile = () => {
   const [amount, setAmount] = useState(0);
@@ -81,53 +91,33 @@ const Profile = () => {
   };
 
   return (
-    <View style={styles.flexOne}>
-      <View style={styles.mainWraper}>
-        <TouchableOpacity
-          style={styles.padding20}
-          onPress={() => onClickWallet()}>
-          <Text
-            style={{
-              color: Colors.PRIMARY,
-            }}>
-            {'Wallet'}
-          </Text>
-        </TouchableOpacity>
-        <Text>{`Amount: ${amount}`}</Text>
-        <TouchableOpacity style={styles.padding20}>
-          <Text
-            style={{
-              color: Colors.PRIMARY,
-            }}>
-            {'Profile Details'}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.padding20}
-          onPress={onClickPaymentHistory}>
-          <Text
-            style={{
-              color: Colors.PRIMARY,
-            }}>
-            {'Payment History'}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.padding20}>
-          <Text
-            style={{
-              color: Colors.PRIMARY,
-            }}>
-            {'Privacy Policies'}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.padding20} onPress={onPressLogOut}>
-          <Text
-            style={{
-              color: Colors.PRIMARY,
-            }}>
-            {'LogOut'}
-          </Text>
-        </TouchableOpacity>
+    <View style={styles.parent}>
+      <Header
+        title={'Profile'}
+        canGoBack={false}
+        backgroundColor={Colors.SECONDARY}
+      />
+      <Image source={Images.gs_consultant} style={styles.image} />
+      <Text style={styles.walletBalance}>Wallet Balance:{amount}</Text>
+      <Text style={styles.walletBalance}>Add Funds</Text>
+      <View style={styles.flex} />
+      <View style={styles.bottomContainer}>
+        <View style={styles.optionRow}>
+          <Image source={Images.upcoming_meetings} style={styles.optionImage} />
+          <Text style={styles.optionText}>Transaction History</Text>
+        </View>
+        <View style={styles.optionRow}>
+          <Image source={Images.chat_send} style={styles.optionImage} />
+          <Text style={styles.optionText}>Profile Details</Text>
+        </View>
+        <View style={styles.optionRow}>
+          <Image source={Images.upcoming_meetings} style={styles.optionImage} />
+          <Text style={styles.optionText}>Privacy Policy</Text>
+        </View>
+        <View style={styles.optionRow}>
+          <Image source={Images.upcoming_meetings} style={styles.optionImage} />
+          <Text style={styles.optionText}>Logout</Text>
+        </View>
       </View>
     </View>
   );
@@ -136,23 +126,46 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  flexOne: {
+  parent: {flex: 1, backgroundColor: Colors.SECONDARY},
+  image: {
+    resizeMode: 'contain',
+    height: Dimensions.get('window').width - 220,
+    width: Dimensions.get('window').width - 220,
+    borderRadius: 18,
+    overflow: 'hidden',
+    backgroundColor: Colors.GRAY_THREE,
+    alignSelf: 'center',
+    marginTop: 40,
+  },
+  walletBalance: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: 12,
+    color: Colors.CHARCOAL_GREY,
+  },
+  flex: {flex: 1},
+  bottomContainer: {
+    marginTop: 18,
+    backgroundColor: Colors.WHITE,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    paddingBottom: 80,
+  },
+  optionRow: {flexDirection: 'row', padding: 18},
+  optionImage: {
+    height: 36,
+    width: 36,
+    resizeMode: 'contain',
+  },
+  optionText: {
+    color: Colors.CHARCOAL_GREY,
+    fontSize: 16,
+    fontWeight: '700',
+    alignSelf: 'center',
+    marginLeft: 8,
+    textAlign: 'center',
     flex: 1,
-  },
-  containerWrapper: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    zIndex: -1,
-  },
-  mainWraper: {
-    flex: 1,
-    flexDirection: 'column',
-    margin: 10,
-  },
-  padding20: {
-    padding: 20,
+    marginRight: 36,
   },
 });

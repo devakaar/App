@@ -114,7 +114,7 @@ const Home = () => {
 
   return (
     <View style={styles.parent}>
-      {/* <StatusBar backgroundColor={Colors.WHITE} barStyle={'dark-content'} /> */}
+      <StatusBar backgroundColor={Colors.WHITE} barStyle={'dark-content'} />
       <StaggeredList
         data={data}
         ListHeaderComponent={header()}

@@ -10,17 +10,22 @@ type Props = {
   canGoBack?: boolean;
   rightIcon?: string;
   onPressRightIcon?: () => void;
+  backgroundColor?: string;
 };
 const Header: React.FC<Props> = ({
   title,
   canGoBack = true,
   rightIcon,
   onPressRightIcon,
+  backgroundColor,
 }) => {
   const navigation = useNavigation();
   return (
-    <View style={styles.parent}>
-      <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
+    <View style={[styles.parent, {backgroundColor}]}>
+      <StatusBar
+        backgroundColor={backgroundColor ? backgroundColor : Colors.WHITE}
+        barStyle="dark-content"
+      />
       {canGoBack && (
         <MaterialIcons
           name="arrow-back"
