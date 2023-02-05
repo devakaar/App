@@ -2,7 +2,6 @@ import {
   StyleSheet,
   View,
   Alert,
-  FlatList,
   Text,
   Image,
   TouchableOpacity,
@@ -14,7 +13,6 @@ import {Colors} from '../../theme';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Header} from '../../components';
 import StaggeredList from '@mindinventory/react-native-stagger-view';
 
 const Home = () => {
@@ -34,13 +32,12 @@ const Home = () => {
     callApi();
   }, []);
 
-  const renderItems = (items: any) => {
-    const {item, i} = items;
-    console.log(items);
-
+  const renderItems = ({item, i}: any) => {
     let randomHeight = pattern[i % pattern.length] ? 300 : 250; //Number(Math.random() * (300 - 250) + 250);
     return (
-      <View
+      <TouchableOpacity
+        key={item.id}
+        onPress={() => navigation.navigate('ConsultantDetails', {id: item._id})}
         style={{
           width: (Dimensions.get('window').width - 18) / 2,
           height: randomHeight,
@@ -49,74 +46,40 @@ const Home = () => {
           overflow: 'hidden',
           elevation: 5,
           backgroundColor: Colors.WHITE,
-        }}
-        key={item.id}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('ConsultantDetails', {id: item._id})
-          }
-          style={
-            {
-              //flex: 1,
-              // marginHorizontal: 20,
-              // marginVertical: 10,
-              // backgroundColor: Colors.WHITE,
-              // elevation: 5,
-              // borderRadius: 8,
-              // width: Dimensions.get('window').width / 2 - 40,
-              // //height: index % 2 === 0 ? 250 : 300,
-              // overflow: 'hidden',
-            }
-          }>
-          <Image
-            source={{uri: item.image}}
-            style={{
-              height: randomHeight - 90,
-              width: DEVICE_WIDTH / 2,
-            }}
-          />
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: 18,
-              fontWeight: '700',
-              color: Colors.BLACK,
-              paddingLeft: 20,
-              marginTop: 5,
-            }}>
-            {item.name}
-          </Text>
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: 16,
-              color: Colors.BLACK,
-              paddingLeft: 20,
-              marginTop: 2,
-            }}>{`Price: ₹ ${item.price}`}</Text>
-        </TouchableOpacity>
-      </View>
-      // <TouchableOpacity
-      //   style={{marginLeft: 9}}
-      //   onPress={() =>
-      //     navigation.navigate('ConsultantDetails', {id: item._id})
-      //   }>
-      //   <Image
-      //     source={{uri: item.image}}
-      //     style={{
-      //       height: 100,
-      //       width: DEVICE_WIDTH / 2 - 18,
-      //       resizeMode: 'contain',
-      //       backgroundColor: Colors.SECONDARY,
-      //     }}
-      //   />
-      // </TouchableOpacity>
+          marginVertical: 10,
+        }}>
+        <Image
+          source={{uri: item.image}}
+          style={{
+            height: randomHeight - 90,
+            width: DEVICE_WIDTH / 2,
+          }}
+        />
+        <Text
+          style={{
+            textAlign: 'left',
+            fontSize: 18,
+            fontWeight: '700',
+            color: Colors.BLACK,
+            paddingLeft: 20,
+            marginTop: 5,
+          }}>
+          {item.name}
+        </Text>
+        <Text
+          style={{
+            textAlign: 'left',
+            fontSize: 16,
+            color: Colors.BLACK,
+            paddingLeft: 20,
+            marginTop: 2,
+          }}>{`Price: ₹ ${item.price}`}</Text>
+      </TouchableOpacity>
     );
   };
 
   return (
     <View style={styles.parent}>
-      {/* <Header title="Home" canGoBack={false} /> */}
       <View
         style={{
           flexDirection: 'row',
@@ -143,20 +106,9 @@ const Home = () => {
           />
         </View>
       </View>
-      {/* <FlatList
-        keyExtractor={item => item._id}
-        data={data}
-        renderItem={renderItems}
-        numColumns={2}
-        // ItemSeparatorComponent={() => (
-        //   <View style={{marginHorizontal: 20, marginVertical: 20}} />
-        // )}
-        showsHorizontalScrollIndicator={false}
-      /> */}
       <StaggeredList
         data={data}
         animationType={'FADE_IN_FAST'}
-        //contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
         renderItem={renderItems}
         //isLoading={isLoading}
