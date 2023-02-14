@@ -25,6 +25,7 @@ const Login = () => {
     AsyncStorage.setItem('token', value.token);
     AsyncStorage.setItem('name', value.name);
     AsyncStorage.setItem('image', value.image);
+    AsyncStorage.setItem('email', value.email);
   };
 
   const googleSignin = async () => {

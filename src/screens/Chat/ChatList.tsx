@@ -67,7 +67,7 @@ const ChatList = () => {
               {`${moment(item?.lastMessage?.updatedAt).format('DD/MM/YYYY')}`}
             </Text>
           </View>
-          <Text style={styles.text}>
+          <Text style={styles.text} numberOfLines={1}>
             {item.lastMessage?.user && 'You: '}
             {item.lastMessage?.text}
           </Text>

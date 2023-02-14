@@ -1,10 +1,11 @@
 import {StyleSheet, Text, TextInput, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {OrderApi} from '../../service';
 import {Colors} from '../../theme';
 import RazorpayCheckout from 'react-native-razorpay';
 import {Header, SButton} from '../../components';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddFunds = () => {
   const navigation = useNavigation();
@@ -14,6 +15,8 @@ const AddFunds = () => {
   const amounts = [100, 150, 200, 500, 1000];
 
   const [amount, setAmount] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
   const onClickWallet = async () => {
     try {
@@ -24,6 +27,19 @@ const AddFunds = () => {
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const storedName = (await AsyncStorage.getItem('name')) ?? '';
+        setName(storedName);
+        const storedEmail = (await AsyncStorage.getItem('email')) ?? '';
+        setEmail(storedEmail);
+      } catch (err: any) {
+        console.log(err);
+      }
+    })();
+  }, []);
+
   const callRazorPay = (data: CreateOrder) => {
     const options = {
       description: 'Credits towards consultation',
@@ -31,11 +47,11 @@ const AddFunds = () => {
       currency: 'INR',
       key: 'rzp_test_GfxJZDSYJvQ0Gf',
       amount: data.amount,
-      name: 'Shopping App',
+      name: 'Salahkaar',
       order_id: data.id,
       prefill: {
-        email: 'test@gmail.com',
-        name: 'Name',
+        email: email ?? 'test@gmail.com',
+        name: name ?? 'Name',
       },
       theme: {color: Colors.PRIMARY},
     };
@@ -94,7 +110,7 @@ const AddFunds = () => {
           </Text>
         ))}
       </View>
-      <View style={{flex: 1}} />
+      <View style={{flex: 0.3}} />
       <SButton
         title="Proceed"
         onPress={onClickWallet}
@@ -132,6 +148,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 18,
     justifyContent: 'space-evenly',
     flexWrap: 'wrap',
+    marginTop: 40,
   },
   staticAmount: {
     marginTop: 18,

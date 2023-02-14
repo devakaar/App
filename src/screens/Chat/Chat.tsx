@@ -104,6 +104,7 @@ const Chat = () => {
         title={name}
         rightIcon={'video-call'}
         onPressRightIcon={scheduleVideoCall}
+        backgroundColor={Colors.SECONDARY}
       />
       <FlatList
         inverted
@@ -249,26 +250,26 @@ const styles = StyleSheet.create({
   userMsgContainer: {
     backgroundColor: Colors.CHAT_SECONDARY,
     alignSelf: 'flex-end',
-    marginRight: 8,
+    marginRight: 10,
   },
   consultantMsgContainer: {
     backgroundColor: Colors.PRIMARY,
     alignSelf: 'flex-start',
-    marginLeft: 8,
+    marginLeft: 10,
   },
   text: {color: Colors.WHITE, fontWeight: '500'},
   bottomContainer: {
     flexDirection: 'row',
-    marginHorizontal: 8,
-    marginVertical: 8,
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
   textInput: {
     flex: 1,
     backgroundColor: '#EEEEEE', //TODO color from colors file
     color: Colors.CHARCOAL_GREY,
     borderRadius: 16,
-    marginRight: 4,
-    paddingVertical: 4,
+    marginRight: 8,
+    paddingVertical: 8,
     paddingHorizontal: 12,
   },
   sendContainer: {
@@ -276,7 +277,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 6,
+    height: 48,
+    width: 48,
+    alignSelf: 'flex-end',
   },
   sendImage: {
     tintColor: Colors.WHITE,

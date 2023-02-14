@@ -52,5 +52,3 @@ const BottomNavigator = () => {
 };
 
 export default BottomNavigator;
-
-const styles = StyleSheet.create({});

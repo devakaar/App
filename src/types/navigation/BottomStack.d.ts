@@ -1,6 +1,6 @@
 type BottomStack = {
-  Home: undefined;
-  ChatList: undefined;
-  Profile: undefined;
+  Home: {icon: string};
+  ChatList: {icon: string};
+  Profile: {icon: string};
   Meetings: undefined;
 };
