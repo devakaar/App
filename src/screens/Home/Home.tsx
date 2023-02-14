@@ -105,23 +105,15 @@ const Home = () => {
       />
       <FlatList
         data={topRated}
-        // scrollEnabled={false}
-        // numColumns={2}
         horizontal
         ListHeaderComponent={() => (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
-              marginHorizontal: 8,
-            }}>
+          <View style={styles.topRatedHeadingContainer}>
             <Icon name="star" color={Colors.GOLDEN_ROD} size={24} />
-            <Text style={styles.flatlistTopRatedHeading}>{'Top\nRated'}</Text>
+            <Text style={styles.topRatedHeading}>{'Top\nRated'}</Text>
           </View>
         )}
         renderItem={renderTopRated}
-        style={styles.flatlistTopRated}
+        style={styles.topRated}
       />
     </ScrollView>
   );
@@ -160,12 +152,18 @@ const styles = StyleSheet.create({
     padding: 8,
     marginBottom: 16,
   },
-  flatlistTopRated: {
+  topRated: {
     backgroundColor: Colors.SECONDARY,
     flexGrow: 0,
     padding: 8,
   },
-  flatlistTopRatedHeading: {
+  topRatedHeadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    marginHorizontal: 8,
+  },
+  topRatedHeading: {
     color: Colors.CHARCOAL_GREY,
     fontSize: 18,
     fontWeight: 'bold',

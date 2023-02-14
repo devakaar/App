@@ -1081,11 +1081,6 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@mindinventory/react-native-stagger-view@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@mindinventory/react-native-stagger-view/-/react-native-stagger-view-1.2.1.tgz#ed70ad50d18e2c27b822b44d488c626cf1bbab81"
-  integrity sha512-JIdnEHM8C23h+GQlFuIyRHMn8SwB3eIa7zNrDoCtFdrW1swhTBaKhFLkrkT71ORxsstZz8FXklMTUfQQ00pXMA==
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
