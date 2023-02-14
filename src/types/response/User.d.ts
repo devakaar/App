@@ -1,6 +1,7 @@
 type User = {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   image: string;
+  amount?: string;
 };

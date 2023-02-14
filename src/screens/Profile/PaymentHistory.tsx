@@ -1,11 +1,4 @@
-import {
-  Alert,
-  FlatList,
-  ListRenderItem,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {FlatList, ListRenderItem, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
@@ -22,7 +15,7 @@ const PaymentHistory = () => {
         const res = await OrderApi.getPaymentHistory();
         setData(res.data.data);
       } catch (err: any) {
-        Alert.alert(err);
+        console.log(err);
       }
     };
     callApi();
@@ -42,12 +35,21 @@ const PaymentHistory = () => {
         />
         <View style={styles.textWrapper}>
           <View style={styles.titleWrapper}>
-            <Text style={styles.title}>{item.amount}</Text>
+            <Text style={styles.title}>{`₹${item.amount}`}</Text>
             <Text style={styles.text}>
               {`${moment(item?.createdAt).format('lll')}`}
             </Text>
           </View>
-          <Text style={styles.text}>{item.status}</Text>
+          <Text
+            style={[
+              styles.status,
+              {
+                color:
+                  item.status === 'success' ? Colors.PRICE_GREEN : Colors.RED,
+              },
+            ]}>
+            {item.status.toUpperCase()}
+          </Text>
           <Text style={styles.text}>
             {item.status && 'Order ID: '}
             {item.orderId}
@@ -85,8 +87,8 @@ export default PaymentHistory;
 const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
-    marginHorizontal: 10,
-    marginVertical: 10,
+    marginHorizontal: 12,
+    marginVertical: 8,
     paddingVertical: 10,
     paddingHorizontal: 10,
     backgroundColor: Colors.WHITE,
@@ -106,6 +108,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.GRAVEL_GREY,
+  },
+  status: {
+    fontWeight: 'bold',
   },
   noData: {
     justifyContent: 'center',

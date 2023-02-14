@@ -6,4 +6,5 @@ type RootStack = {
   Chat: {roomId: string; name: string; consultantId: string};
   CallScreen: {item: Meeting};
   PaymentHistory: undefined;
+  AddFunds: {setCallProfileApi: (bool: boolean) => void};
 };

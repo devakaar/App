@@ -21,8 +21,10 @@ import AxiosInstance from '../../service/Instance';
 const Login = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
 
-  const storeData = async (value: string) => {
-    AsyncStorage.setItem('token', value);
+  const storeData = async (value: LoginResponse) => {
+    AsyncStorage.setItem('token', value.token);
+    AsyncStorage.setItem('name', value.name);
+    AsyncStorage.setItem('image', value.image);
   };
 
   const googleSignin = async () => {
@@ -46,11 +48,11 @@ const Login = () => {
         };
         const apiResponse = (await LoginApi.login(body)).data.data;
         AxiosInstance.defaults.headers.common.token = apiResponse.token;
-        storeData(apiResponse.token ?? '');
+        storeData(apiResponse ?? {});
         navigation.navigate('BottomTabs');
       }
     } catch (err: any) {
-      // Alert.alert(err);
+      console.log(err);
     }
   };
 

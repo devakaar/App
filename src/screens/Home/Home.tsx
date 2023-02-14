@@ -1,135 +1,129 @@
 import {
   StyleSheet,
   View,
-  Alert,
   Text,
   Image,
   TouchableOpacity,
   Dimensions,
   StatusBar,
+  FlatList,
+  ListRenderItem,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ConsultantApi} from '../../service';
 import {Colors} from '../../theme';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../../utils';
+import {DEVICE_WIDTH} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import StaggeredList from '@mindinventory/react-native-stagger-view';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-  const [data, setData] = useState<Array<Consultant>>([]);
-  const pattern = [0, 1, 1, 0];
+  const [latest, setLatest] = useState<Array<Consultant>>([]);
+  const [topRated, setTopRated] = useState<Array<Consultant>>([]);
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
 
   useEffect(() => {
-    const callApi = async () => {
+    (async () => {
       try {
-        const res = await ConsultantApi.getAllConsultants();
-        setData(previous => [...previous, ...res.data.data]);
+        const res = await ConsultantApi.getHomeConsultants();
+        setLatest(res.data.data.latest);
+        setTopRated(res.data.data.topRated);
+        const storedName = (await AsyncStorage.getItem('name')) ?? '';
+        setName(storedName);
+        const storedImage = (await AsyncStorage.getItem('image')) ?? '';
+        setImage(storedImage);
       } catch (err: any) {
-        Alert.alert(err);
+        console.log(err);
       }
-    };
-    callApi();
+    })();
   }, []);
 
-  const renderItems = ({item, i}: any) => {
-    let randomHeight = pattern[i % pattern.length] ? 200 : 200; //Number(Math.random() * (300 - 250) + 250);
+  const renderLatest: ListRenderItem<Consultant> = ({item}) => {
     return (
       <TouchableOpacity
-        key={item.id}
+        key={item._id}
         onPress={() => navigation.navigate('ConsultantDetails', {id: item._id})}
-        style={{
-          width: (Dimensions.get('window').width - 18) / 2,
-          height: randomHeight,
-          margin: 4,
-          borderRadius: 18,
-          overflow: 'hidden',
-          elevation: 5,
-          backgroundColor: Colors.WHITE,
-          marginVertical: 6,
-        }}>
+        style={styles.itemContainer}>
         <Image
           source={{uri: item.image}}
-          style={{
-            height: randomHeight - 65,
-            width: DEVICE_WIDTH / 2,
-          }}
+          style={styles.itemImage}
           resizeMode={'contain'}
         />
-        <Text
-          style={{
-            textAlign: 'left',
-            fontSize: 18,
-            fontWeight: '700',
-            color: Colors.BLACK,
-            paddingLeft: 20,
-            marginTop: 5,
-          }}>
-          {item.name}
-        </Text>
-        <Text
-          style={{
-            textAlign: 'left',
-            fontSize: 16,
-            color: Colors.BLACK,
-            paddingLeft: 20,
-            marginTop: 2,
-          }}>{`Price: ₹ ${item.price}`}</Text>
+        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemPrice}>{`₹${item.price}/min`}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderTopRated: ListRenderItem<Consultant> = ({item}) => {
+    return (
+      <TouchableOpacity
+        key={item._id}
+        onPress={() => navigation.navigate('ConsultantDetails', {id: item._id})}
+        style={styles.itemContainer}>
+        <Image
+          source={{uri: item.image}}
+          style={styles.itemImage}
+          resizeMode={'contain'}
+        />
+        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemPrice}>{`₹${item.price}/min`}</Text>
       </TouchableOpacity>
     );
   };
 
   const header = () => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginHorizontal: 20,
-          paddingVertical: 8,
-        }}>
-        <Text
-          style={{
-            fontSize: 34,
-            fontWeight: '600',
-            color: Colors.BLACK,
-          }}>
-          {'Welcome!'}
-        </Text>
-        <View style={{height: 40, width: 40, alignItems: 'center'}}>
-          <Image
-            source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
-            style={{
-              height: 40,
-              width: 40,
-              resizeMode: 'contain',
-            }}
-          />
-        </View>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>{`Welcome ${name}`}</Text>
+        <Image source={{uri: image}} style={styles.headerImage} />
       </View>
     );
   };
 
   return (
-    <View style={styles.parent}>
+    <ScrollView
+      style={styles.parent}
+      contentContainerStyle={styles.parentContainer}>
       <StatusBar backgroundColor={Colors.WHITE} barStyle={'dark-content'} />
-      <StaggeredList
-        data={data}
-        ListHeaderComponent={header()}
-        animationType={'FADE_IN_FAST'}
-        showsVerticalScrollIndicator={false}
-        renderItem={renderItems}
-        style={{marginBottom: 40}}
-        //isLoading={isLoading}
-        // LoadingView={
-        //   <View style={styles.activityIndicatorWrapper}>
-        //     <ActivityIndicator color={'black'} size={'large'} />
-        //   </View>
-        // }
+      {header()}
+      <FlatList
+        data={latest}
+        scrollEnabled={false}
+        numColumns={2}
+        ListHeaderComponent={() => (
+          <Text style={styles.flatlistHeading}>
+            Recently Joined Consultants
+          </Text>
+        )}
+        renderItem={renderLatest}
+        style={styles.flatlistLatest}
       />
-    </View>
+      <FlatList
+        data={topRated}
+        // scrollEnabled={false}
+        // numColumns={2}
+        horizontal
+        ListHeaderComponent={() => (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+              marginHorizontal: 8,
+            }}>
+            <Icon name="star" color={Colors.GOLDEN_ROD} size={24} />
+            <Text style={styles.flatlistTopRatedHeading}>{'Top\nRated'}</Text>
+          </View>
+        )}
+        renderItem={renderTopRated}
+        style={styles.flatlistTopRated}
+      />
+    </ScrollView>
   );
 };
 
@@ -138,12 +132,81 @@ export default Home;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: Colors.WHITE,
+    backgroundColor: '#EEE',
   },
-  banner: {
-    height: DEVICE_HEIGHT / 4,
+  parentContainer: {paddingBottom: 80},
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    backgroundColor: Colors.SECONDARY,
   },
-  heading: {
+  headerText: {
+    fontSize: 22,
+    fontWeight: 'bold',
     color: Colors.CHARCOAL_GREY,
+  },
+  headerImage: {
+    height: 40,
+    width: 40,
+    resizeMode: 'contain',
+    borderRadius: 4,
+  },
+  flatlistLatest: {
+    backgroundColor: Colors.PRIMARY,
+    flexGrow: 0,
+    padding: 8,
+    marginBottom: 16,
+  },
+  flatlistTopRated: {
+    backgroundColor: Colors.SECONDARY,
+    flexGrow: 0,
+    padding: 8,
+  },
+  flatlistTopRatedHeading: {
+    color: Colors.CHARCOAL_GREY,
+    fontSize: 18,
+    fontWeight: 'bold',
+    margin: 8,
+    textAlign: 'center',
+  },
+  flatlistHeading: {
+    color: Colors.WHITE,
+    fontSize: 18,
+    fontWeight: 'bold',
+    margin: 8,
+    textAlign: 'center',
+  },
+  itemContainer: {
+    width: (Dimensions.get('window').width - 34) / 2,
+    margin: 4,
+    borderRadius: 4,
+    overflow: 'hidden',
+    elevation: 5,
+    backgroundColor: Colors.WHITE,
+    marginVertical: 6,
+    paddingBottom: 8,
+  },
+  itemImage: {
+    height: 150,
+    width: DEVICE_WIDTH / 2,
+  },
+  itemName: {
+    textAlign: 'left',
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.BLACK,
+    paddingLeft: 20,
+    marginTop: 5,
+  },
+  itemPrice: {
+    textAlign: 'left',
+    fontSize: 16,
+    color: Colors.PRICE_GREEN,
+    paddingLeft: 20,
+    marginTop: 2,
+    fontWeight: 'bold',
   },
 });

@@ -112,13 +112,14 @@ const UpcomingMeetings = () => {
         canGoBack={false}
         backgroundColor={Colors.SECONDARY}
       />
-      <View style={styles.listContainer}>
-        <FlatList
-          keyExtractor={_item => _item._id}
-          data={data}
-          renderItem={chatItems}
-        />
-      </View>
+      <FlatList
+        keyExtractor={_item => _item._id}
+        data={data}
+        renderItem={chatItems}
+        contentContainerStyle={{
+          paddingBottom: 84,
+        }}
+      />
     </View>
   );
 };

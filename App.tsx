@@ -14,7 +14,7 @@ const App = () => {
     response => response,
     error => {
       console.log('Server Error', JSON.stringify(error.response.data, null, 2));
-      return Promise.reject(error.response.data.message);
+      return Promise.reject(error?.response?.data?.message);
     },
   );
 

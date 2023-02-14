@@ -10,4 +10,5 @@ export default {
   GOLDEN_ROD: '#F1AF09',
   LIGHT_BLUE: '#8893ee',
   CHAT_SECONDARY: '#609DFE',
+  PRICE_GREEN: '#037d50',
 };

@@ -13,6 +13,7 @@ import {ConsultantDetails} from '../screens/Home';
 import {Chat} from '../screens/Chat';
 import {CallScreen} from '../screens/CallScreen';
 import {PaymentHistory} from '../screens/Profile';
+import AddFunds from '../screens/Profile/AddFunds';
 
 const RootNavigator = () => {
   const Stack = createNativeStackNavigator<RootStack>();
@@ -37,6 +38,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="CallScreen" component={CallScreen} />
       <Stack.Screen name="PaymentHistory" component={PaymentHistory} />
+      <Stack.Screen name="AddFunds" component={AddFunds} />
     </Stack.Navigator>
   );
 };

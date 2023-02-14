@@ -94,7 +94,7 @@ const Chat = () => {
         Alert.alert(res.data.message);
       }
     } catch (err: any) {
-      Alert.alert(err);
+      console.log(err);
     }
   };
 
@@ -103,7 +103,6 @@ const Chat = () => {
       <Header
         title={name}
         rightIcon={'video-call'}
-        padding={8}
         onPressRightIcon={scheduleVideoCall}
       />
       <FlatList
