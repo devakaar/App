@@ -116,6 +116,9 @@ const Chat = () => {
               <View
                 style={[styles.commonMsgContainer, styles.userMsgContainer]}>
                 <Text style={styles.text}>{item.text}</Text>
+                <Text style={styles.time}>
+                  {moment(item.updatedAt).format('hh:mm a')}
+                </Text>
               </View>
             );
           }
@@ -126,6 +129,9 @@ const Chat = () => {
                 styles.consultantMsgContainer,
               ]}>
               <Text style={styles.text}>{item.text}</Text>
+              <Text style={styles.time}>
+                {moment(item.updatedAt).format('hh:mm a')}
+              </Text>
             </View>
           );
         }}
@@ -258,18 +264,19 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   text: {color: Colors.WHITE, fontWeight: '500'},
+  time: {fontSize: 10, alignSelf: 'flex-end'},
   bottomContainer: {
     flexDirection: 'row',
     marginHorizontal: 10,
-    marginVertical: 10,
+    marginBottom: 4,
+    marginTop: 12,
   },
   textInput: {
     flex: 1,
     backgroundColor: '#EEEEEE', //TODO color from colors file
     color: Colors.CHARCOAL_GREY,
-    borderRadius: 16,
-    marginRight: 8,
-    paddingVertical: 8,
+    borderRadius: 24,
+    marginRight: 4,
     paddingHorizontal: 12,
   },
   sendContainer: {

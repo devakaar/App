@@ -96,9 +96,7 @@ const Home = () => {
         scrollEnabled={false}
         numColumns={2}
         ListHeaderComponent={() => (
-          <Text style={styles.flatlistHeading}>
-            Recently Joined Consultants
-          </Text>
+          <Text style={styles.flatlistHeading}>Recently Joined</Text>
         )}
         renderItem={renderLatest}
         style={styles.flatlistLatest}

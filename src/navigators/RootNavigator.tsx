@@ -12,8 +12,7 @@ import AxiosInstance from '../service/Instance';
 import {ConsultantDetails} from '../screens/Home';
 import {Chat} from '../screens/Chat';
 import {CallScreen} from '../screens/CallScreen';
-import {PaymentHistory} from '../screens/Profile';
-import AddFunds from '../screens/Profile/AddFunds';
+import {AddFunds, PaymentHistory} from '../screens/Profile';
 
 const RootNavigator = () => {
   const Stack = createNativeStackNavigator<RootStack>();
