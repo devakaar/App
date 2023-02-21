@@ -28,10 +28,7 @@ const UpcomingMeetings = () => {
 
   const getUpcomingMeetings = async () => {
     MeetingApi.getMeetingList()
-      .then(res => {
-        console.log('res.data.data', JSON.stringify(res.data.data, null, 2));
-        setData(res.data.data);
-      })
+      .then(res => setData(res.data.data))
       .catch(err => console.log('error ', err));
   };
 

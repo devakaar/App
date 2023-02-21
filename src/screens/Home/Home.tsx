@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Loader} from '../../components';
 
 const Home = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
@@ -25,6 +26,7 @@ const Home = () => {
   const [topRated, setTopRated] = useState<Array<Consultant>>([]);
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -38,6 +40,8 @@ const Home = () => {
         setImage(storedImage);
       } catch (err: any) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
@@ -90,29 +94,34 @@ const Home = () => {
       style={styles.parent}
       contentContainerStyle={styles.parentContainer}>
       <StatusBar backgroundColor={Colors.WHITE} barStyle={'dark-content'} />
-      {header()}
-      <FlatList
-        data={latest}
-        scrollEnabled={false}
-        numColumns={2}
-        ListHeaderComponent={() => (
-          <Text style={styles.flatlistHeading}>Recently Joined</Text>
-        )}
-        renderItem={renderLatest}
-        style={styles.flatlistLatest}
-      />
-      <FlatList
-        data={topRated}
-        horizontal
-        ListHeaderComponent={() => (
-          <View style={styles.topRatedHeadingContainer}>
-            <Icon name="star" color={Colors.GOLDEN_ROD} size={24} />
-            <Text style={styles.topRatedHeading}>{'Top\nRated'}</Text>
-          </View>
-        )}
-        renderItem={renderTopRated}
-        style={styles.topRated}
-      />
+      {!isLoading && header()}
+      {!isLoading && (
+        <FlatList
+          data={latest}
+          scrollEnabled={false}
+          numColumns={2}
+          ListHeaderComponent={() => (
+            <Text style={styles.flatlistHeading}>Recently Joined</Text>
+          )}
+          renderItem={renderLatest}
+          style={styles.flatlistLatest}
+        />
+      )}
+      {!isLoading && (
+        <FlatList
+          data={topRated}
+          horizontal
+          ListHeaderComponent={() => (
+            <View style={styles.topRatedHeadingContainer}>
+              <Icon name="star" color={Colors.GOLDEN_ROD} size={24} />
+              <Text style={styles.topRatedHeading}>{'Top\nRated'}</Text>
+            </View>
+          )}
+          renderItem={renderTopRated}
+          style={styles.topRated}
+        />
+      )}
+      {isLoading && <Loader isLoading={isLoading} />}
     </ScrollView>
   );
 };

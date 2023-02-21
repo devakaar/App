@@ -15,12 +15,13 @@ import {Colors, Images} from '../../theme';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
-import {Header} from '../../components';
+import {Header, Loader} from '../../components';
 
 const ChatList = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
   const isFocused = useIsFocused();
   const [data, setData] = useState<Array<Room>>([]);
+  const [isLoading, setisLoading] = useState(true);
 
   let con = io(BASE_URL, {transports: ['websocket'], forceNew: true});
 
@@ -31,6 +32,7 @@ const ChatList = () => {
         con.emit('joinList', AxiosInstance.defaults.headers.common.token);
         con.emit('getList', AxiosInstance.defaults.headers.common.token);
         con.on('list', (list: Array<Room>) => {
+          setisLoading(false);
           setData(list);
         });
       });
@@ -38,7 +40,7 @@ const ChatList = () => {
     return () => {
       con.disconnect();
     };
-  }, [isFocused]);
+  }, [con, isFocused]);
 
   const chatItems: ListRenderItem<Room> = ({item}) => {
     return (
@@ -92,12 +94,16 @@ const ChatList = () => {
         backgroundColor={Colors.SECONDARY}
       />
       <View style={[styles.flex, {backgroundColor: Colors.WHITE}]}>
-        <FlatList
-          keyExtractor={_item => _item._id}
-          data={data}
-          renderItem={chatItems}
-          ListEmptyComponent={renderEmptyView}
-        />
+        {!isLoading ? (
+          <FlatList
+            keyExtractor={_item => _item._id}
+            data={data}
+            renderItem={chatItems}
+            ListEmptyComponent={renderEmptyView}
+          />
+        ) : (
+          <Loader isLoading={isLoading} />
+        )}
       </View>
     </View>
   );

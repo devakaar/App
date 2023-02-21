@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {Button, View, StatusBar} from 'react-native';
@@ -6,11 +6,14 @@ import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 
 const CallScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-  const url = 'https://meet.jit.si/exemples125';
+  const route = useRoute<RouteProp<RootStack, 'CallScreen'>>();
+  const {meetingLink, consultant} = route.params.item;
+
+  const url = meetingLink;
   const userInfo = {
-    displayName: 'Praful',
-    email: 'infoindore7@gmail.com',
-    avatar: 'https:/gravatar.com/avatar/abc123',
+    displayName: consultant.name,
+    email: '',
+    avatar: consultant.image,
   };
   const options = {
     audioMuted: false,

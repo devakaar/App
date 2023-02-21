@@ -5,4 +5,5 @@ export default {
   logo: require('../assets/images/logo.png'),
   chat_send: require('../assets/images/chat_send.png'),
   upcoming_meetings: require('../assets/images/upcoming_meetings.png'),
+  loading: require('../assets/images/loading.json'),
 };
