@@ -31,7 +31,7 @@ const Chat = () => {
   const [startPicker, setStartPicker] = useState<boolean>(false);
   const [endPicker, setEndPicker] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<{name: string; value: string}>();
+  const [endDate, setEndDate] = useState<{name: string; value: number}>();
 
   const flatListRef = useRef<FlatList>(null);
 
@@ -83,7 +83,7 @@ const Chat = () => {
     let payload: MeetingRequest = {
       consultant: consultantId,
       scheduledTime: startDate ?? new Date(),
-      duration: endDate?.value ?? '',
+      duration: endDate?.value ?? 0,
     };
     try {
       const res = await MeetingApi.createMeeting(payload);
@@ -174,9 +174,9 @@ const Chat = () => {
       />
       <BottomView
         data={[
-          {name: '10 min', value: '10000'},
-          {name: '30 min', value: '30000'},
-          {name: '1 hour', value: '60000'},
+          {name: '10 min', value: 10 * 60 * 1000},
+          {name: '30 min', value: 30 * 60 * 1000},
+          {name: '1 hour', value: 1 * 60 * 60 * 1000},
         ]}
         title={'Select Meeting Duration'}
         onTouch={item => {

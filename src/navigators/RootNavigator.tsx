@@ -11,8 +11,8 @@ import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../service/Instance';
 import {ConsultantDetails} from '../screens/Home';
 import {Chat} from '../screens/Chat';
-import {CallScreen} from '../screens/CallScreen';
-import {AddFunds, PaymentHistory} from '../screens/Profile';
+import {CallScreen} from '../screens/Meeting';
+import {AddFunds, PastMeetings, PaymentHistory} from '../screens/Profile';
 
 const RootNavigator = () => {
   const Stack = createNativeStackNavigator<RootStack>();
@@ -38,6 +38,7 @@ const RootNavigator = () => {
       <Stack.Screen name="CallScreen" component={CallScreen} />
       <Stack.Screen name="PaymentHistory" component={PaymentHistory} />
       <Stack.Screen name="AddFunds" component={AddFunds} />
+      <Stack.Screen name="PastMeetings" component={PastMeetings} />
     </Stack.Navigator>
   );
 };

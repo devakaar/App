@@ -11,10 +11,10 @@ import Modal from 'react-native-modal';
 import {Colors} from '../theme';
 
 type Props = {
-  data: Array<{name: string; value: string}>;
+  data: Array<{name: string; value: number}>;
   title: string;
   onTouch: (
-    item: {name: string; value: string},
+    item: {name: string; value: number},
     index: number,
     title: string,
   ) => void;

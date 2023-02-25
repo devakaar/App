@@ -7,4 +7,5 @@ type RootStack = {
   CallScreen: {item: Meeting};
   PaymentHistory: undefined;
   AddFunds: {setCallProfileApi: (bool: boolean) => void};
+  PastMeetings: undefined;
 };

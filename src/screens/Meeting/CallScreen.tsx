@@ -1,7 +1,7 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
-import {Button, View, StatusBar} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, StyleSheet} from 'react-native';
 import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 
 const CallScreen = () => {
@@ -67,31 +67,27 @@ const CallScreen = () => {
     };
   });
 
-  function onConferenceTerminated(nativeEvent: any) {
+  function onConferenceTerminated() {
     console.log('Terminate');
     JitsiMeet.endCall();
     navigation.navigate('BottomTabs');
   }
 
-  function onConferenceJoined(nativeEvent: any) {
+  function onConferenceJoined() {
     console.log('joined');
   }
 
-  function onConferenceWillJoin(nativeEvent: any) {
+  function onConferenceWillJoin() {
     console.log('will');
   }
 
   return (
     <View style={{flex: 1}}>
       <JitsiMeetView
-        onConferenceTerminated={(e: any) => onConferenceTerminated(e)}
-        onConferenceJoined={(e: any) => onConferenceJoined(e)}
-        onConferenceWillJoin={(e: any) => onConferenceWillJoin(e)}
-        style={{
-          flex: 1,
-          height: '100%',
-          width: '100%',
-        }}
+        onConferenceTerminated={onConferenceTerminated}
+        onConferenceJoined={onConferenceJoined}
+        onConferenceWillJoin={onConferenceWillJoin}
+        style={styles.jitsi}
         options={{url, userInfo, meetOptions: options, meetFeatureFlags}}
       />
     </View>
@@ -99,3 +95,11 @@ const CallScreen = () => {
 };
 
 export default CallScreen;
+
+const styles = StyleSheet.create({
+  jitsi: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
+  },
+});

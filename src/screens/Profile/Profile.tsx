@@ -67,14 +67,10 @@ const Profile = () => {
           <Text style={styles.optionText}>Transaction History</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => Alert.alert('')}
+          onPress={() => navigation.navigate('PastMeetings')}
           style={styles.optionRow}>
-          <MaterialIcons
-            name={'account-circle'}
-            color={Colors.LIGHT_BLUE}
-            size={30}
-          />
-          <Text style={styles.optionText}>Account Details</Text>
+          <MaterialIcons name={'history'} color={Colors.LIGHT_BLUE} size={30} />
+          <Text style={styles.optionText}>Past Meetings</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => Alert.alert('')}

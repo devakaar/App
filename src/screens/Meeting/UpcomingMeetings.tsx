@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import {
@@ -14,22 +14,26 @@ import {
   Alert,
   Linking,
 } from 'react-native';
-import {Header} from '../../components';
+import {Header, Loader} from '../../components';
 import {Colors, Images} from '../../theme';
 import {MeetingApi} from '../../service';
 
 const UpcomingMeetings = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
   const [data, setData] = useState<Array<Meeting>>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    getUpcomingMeetings();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getUpcomingMeetings();
+    }, []),
+  );
 
   const getUpcomingMeetings = async () => {
-    MeetingApi.getMeetingList()
+    MeetingApi.getMeetingList('upcoming')
       .then(res => setData(res.data.data))
-      .catch(err => console.log('error ', err));
+      .catch(err => console.log('error ', err))
+      .finally(() => setIsLoading(false));
   };
 
   const requestCameraPermission = async (item: Meeting) => {
@@ -82,22 +86,20 @@ const UpcomingMeetings = () => {
         style={[styles.listContainer, styles.itemContainer]}
         onPress={() => requestCameraPermission(item)}>
         <FastImage
-          style={styles.image}
+          style={styles.itemImage}
           source={{
             uri: item.consultant.image || 'https://unsplash.it/400/400?image=1',
             priority: FastImage.priority.normal,
           }}
           defaultSource={Images.logo}
         />
-        <View style={styles.textWrapper}>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>{item.consultant?.name}</Text>
-          </View>
-          <Text style={styles.text}>
-            {'Schedule Time: '}
+        <View style={styles.itemTextContainer}>
+          <Text style={styles.itemTitle}>{item.consultant?.name}</Text>
+          <Text style={styles.itemTime}>
             {`${moment(item?.scheduledTime).format('Do MMM hh:mm a')}`}
           </Text>
         </View>
+        <Text style={styles.itemJoinText}>Join</Text>
       </TouchableOpacity>
     );
   };
@@ -109,14 +111,16 @@ const UpcomingMeetings = () => {
         canGoBack={false}
         backgroundColor={Colors.SECONDARY}
       />
-      <FlatList
-        keyExtractor={_item => _item._id}
-        data={data}
-        renderItem={chatItems}
-        contentContainerStyle={{
-          paddingBottom: 84,
-        }}
-      />
+      {!isLoading ? (
+        <FlatList
+          keyExtractor={_item => _item._id}
+          data={data}
+          renderItem={chatItems}
+          contentContainerStyle={styles.flatlist}
+        />
+      ) : (
+        <Loader isLoading={isLoading} />
+      )}
     </View>
   );
 };
@@ -138,19 +142,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.WHITE,
   },
-  image: {height: 50, width: 50, borderRadius: 25},
-  textWrapper: {paddingLeft: 20, flex: 1},
-  titleWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  flatlist: {
+    paddingBottom: 84,
   },
-  title: {
+  itemImage: {height: 50, width: 50, borderRadius: 25},
+  itemTextContainer: {paddingLeft: 20, flex: 1},
+  itemTitle: {
     color: Colors.CHARCOAL_GREY,
-    fontWeight: '700',
-    fontSize: 18,
+    fontWeight: '600',
+    fontSize: 16,
   },
-  text: {
+  itemTime: {
     color: Colors.GRAVEL_GREY,
     paddingTop: 5,
+  },
+  itemJoinText: {
+    color: Colors.PRIMARY,
+    alignSelf: 'center',
+    paddingRight: 8,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
